@@ -469,8 +469,9 @@
 
             @if(session()->has('success'))
                 Swal.fire({
-                    title: "{{ session('success') }}",
                     icon: "success",
+                    title: "{{ __('Success') }}",
+                    text: "{{ session('success') }}",
                     draggable: true,
                     showConfirmButton: false,
                     timer : 3000
@@ -479,7 +480,8 @@
 
             @if(session()->has('error'))
                 Swal.fire({
-                    title: "{{ session('error') }}",
+                    title: "{{ __('Error') }}",
+                    text: "{{ session('error') }}",
                     icon: "error",
                     draggable: true,
                     showConfirmButton: false,

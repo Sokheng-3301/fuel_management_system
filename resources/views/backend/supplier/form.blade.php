@@ -1,94 +1,113 @@
 @extends('backend.layout.master')
 @section('title')
     @if ($update)
-        {{ __('Update Todays Fuel Price') }}
+        {{ __('Update Supplier') }}
     @else
-        {{ __('Add Todays Fuel Price') }}
+        {{ __('Add Supplier') }}
     @endif
 @endsection
 @section('content')
     <!--begin::Row-->
     <div class="row">
         <!-- Start col -->
-        <div class="col-lg-6 connectedSortable">
+        <div class="col-lg-12 connectedSortable">
             <!-- /.card -->
             <!-- DIRECT CHAT -->
             <div class="card direct-chat direct-chat-primary mb-4">
-                <form action="{{ $update ? route('fuel-type-price.update', $fuel->id) : route('fuel-type-price.store') }}"
-                    method="POST" autocomplete="off" class="ui form">
+                <form action="{{ $update ? route('supplier.update', $item->id) : route('supplier.store') }}" method="POST"
+                    autocomplete="off" class="ui form">
                     @csrf
                     @if ($update)
                         @method('PUT')
                     @endif
                     <div class="card-header">
-                        <h3 class="card-title">{{ $update ? __('Update Todays Fuel Price') : __('Add Todays Fuel Price') }}</h3>
+                        <h3 class="card-title">{{ $update ? __('Update Supplier') : __('Add Supplier') }}</h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse">
                                 <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
                                 <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
                             </button>
                             <button type="reset" class="ui button small">{{ __('Reset') }}</button>
-                            <button type="submit"
-                                class="ui button small {{ $update ? 'teal' : 'blue' }}"><i
+                            <button type="submit" class="ui button small {{ $update ? 'teal' : 'blue' }}"><i
                                     class="bi {{ $update ? 'bi-pencil-square' : 'bi-bookmark-check-fill' }} icon"></i>
-                                    {{ $update ? __('Update') : __("Save") }}
+                                {{ $update ? __('Update') : __('Save') }}
                             </button>
                         </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body p-3">
                         <div class="row">
+                            <div class="col-md-6 field">
+                                <div class="field">
+                                    <label for="supplierNameKh">{{ __('Supplier Name (Khmer)') }} <span
+                                            class="text-danger">*</span></label>
+                                    <div class="ui input">
+                                        <input type="text" id="supplierNameKh" name="fullname_kh" class="ui input"
+                                            value="{{ $update ? $item->fullname_kh : old('fullname_kh') }}" autofocus
+                                            placeholder="{{ __('Supplier Name (Khmer)') }}">
+                                    </div>
+                                    @error('fullname_kh')
+                                        <div class="ui pointing red basic label">{{ __($message) }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="field">
+                                    <label for="supplierNameEn">{{ __('Supplier Name (English)') }} <span
+                                            class="text-danger">*</span></label>
+                                    <div class="ui input">
+                                        <input type="text" id="supplierNameEn" name="fullname_en"
+                                            value="{{ $update ? $item->fullname_en : old('fullname_en') }}"
+                                            placeholder="{{ __('Supplier Name (English)') }}">
+                                    </div>
+                                    @error('fullname_en')
+                                        <div class="ui pointing red basic label">{{ __($message) }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 field">
+                                <div class="field">
+                                    <label for="emailAddress">{{ __('Email Address') }} <span
+                                            class="text-danger">*</span></label>
+                                    <div class="ui input labeled">
+                                        <label for="emailAddress" class="ui label"><i class="bi bi-envelope-at-fill"></i></label>
+                                        <input type="email" id="emailAddress" name="email" class="ui input"
+                                            value="{{ $update ? $item->email : old('email') }}" autofocus
+                                            placeholder="{{ __('Email Address') }}">
+                                    </div>
+                                    @error('email')
+                                        <div class="ui pointing red basic label">{{ __($message) }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="field">
+                                    <label for="phoneNumber">{{ __('Contact Number') }} <span
+                                            class="text-danger">*</span></label>
+                                    <div class="ui input labeled">
+                                        <label for="phoneNumber" class="ui label"><i class="bi bi-telephone-fill"></i></label>
+                                        <input type="tel" id="phoneNumber" name="phone"
+                                            value="{{ $update ? $item->phone : old('phone') }}"
+                                            placeholder="{{ __('Contact Number') }}">
+                                    </div>
+                                    @error('phone')
+                                        <div class="ui pointing red basic label">{{ __($message) }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="col-md-12 field">
                                 <div class="field">
-                                    <label for="fuelTypeKh">{{ __('Fuel Type (Khmer)') }} <span
-                                            class="text-danger">*</span></label>
-                                    <div class="ui input @error('fuel_type_kh') error @enderror">
-                                        <input type="text" id="fuelTypeKh" name="fuel_type_kh" class="ui input"
-                                            value="{{ $update ? $fuel->fuel_type_kh : old('fuel_type_kh') }}" autofocus
-                                            placeholder="{{ __('Fuel Type (Khmer)') }}">
+                                    <label for="address">{{ __('Address') }} <span class="text-danger">*</span></label>
+                                    <div class="ui input">
+                                        <textarea name="address" id="address" rows="5" placeholder="{{ __('Address') }}...">{{ $update ? $item->address : old('address') }}</textarea>
                                     </div>
-                                    @error('fuel_type_kh')
+                                    @error('address')
                                         <div class="ui pointing red basic label">{{ __($message) }}</div>
                                     @enderror
                                 </div>
 
-                                <div class="field">
-                                    <label for="fuelTypeEn">{{ __('Fuel Type (English)') }} <span
-                                            class="text-danger">*</span></label>
-                                    <div class="ui input @error('fuel_type_en') error @enderror">
-                                        <input type="text" id="fuelTypeEn" name="fuel_type_en"
-                                            value="{{ $update ? $fuel->fuel_type_en : old('fuel_type_en') }}"
-                                            placeholder="{{ __('Fuel Type (English)') }}">
-                                    </div>
-                                    @error('fuel_type_en')
-                                        <div class="ui pointing red basic label">{{ __($message) }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="field">
-                                    <label for="todayPrice">{{ __('Fuel Price') }} <span
-                                            class="text-danger">*</span></label>
-                                    <div class="ui labeled input">
-                                        <label for="todayPrice" class="ui label"><i
-                                                class="bi bi-currency-dollar icon"></i></label>
-                                        <input type="number" step="0.01" name="today_price" id="todayPrice"
-                                            placeholder="{{ __('Fuel Price') }}"
-                                            value="{{ $update ? $fuel->today_price : old('today_price') }}">
-                                    </div>
-                                </div>
-
-                                <div class="field">
-                                    <div class="ui toggle checkbox">
-                                        <input type="checkbox" name="public" id="public"
-                                            @if ($update) {{ $fuel->visibility == 1 ? 'checked' : '' }}
-                                        @else
-                                            checked @endif
-                                            value="1">
-                                        <label for="public" class="fw-bold">{{ __('Show as public') }}</label>
-                                    </div>
-                                </div>
                                 <div class="ui error message"></div>
                             </div>
+
                         </div>
                     </div>
                 </form>
@@ -105,26 +124,41 @@
         $('.ui.form')
             .form({
                 fields: {
-                    fuel_type_kh: {
-                        identifier: 'fuel_type_kh',
+                    fullname_kh: {
+                        identifier: 'fullname_kh',
                         rules: [{
                             type: 'empty',
-                            prompt: "{{ __('Please enter Fuel Type (Khmer)') }}"
+                            prompt: "{{ __('Please enter Supplier Name (Khmer)') }}"
                         }]
                     },
-                    fuel_type_en: {
-                        identifier: 'fuel_type_en',
+                    fullname_en: {
+                        identifier: 'fullname_en',
                         rules: [{
                             type: 'empty',
-                            prompt: "{{ __('Please enter Fuel Type (English)') }}"
+                            prompt: "{{ __('Please enter Supplier Name (English)') }}"
                         }]
                     },
 
-                    today_price: {
-                        identifier: 'today_price',
+                    email: {
+                        identifier: 'email',
                         rules: [{
                             type: 'empty',
-                            prompt: "{{ __('Please enter Fuel Price ($)') }}"
+                            prompt: "{{ __('Please enter Email Adress') }}"
+                        }]
+                    },
+                    phone: {
+                        identifier: 'phone',
+                        rules: [{
+                            type: 'empty',
+                            prompt: "{{ __('Please enter Contact Number') }}"
+                        }]
+                    },
+
+                    address: {
+                        identifier: 'address',
+                        rules: [{
+                            type: 'empty',
+                            prompt: "{{ __('Please enter Address') }}"
                         }]
                     },
                 }

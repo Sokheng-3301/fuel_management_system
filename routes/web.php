@@ -55,6 +55,8 @@ Route::middleware(['lang', 'auth', 'active.menu'])->group(function () {
 
     // Supplier Route
     Route::resource('supplier', SupplierController::class)->names('supplier');
+    Route::get('supplier/export/pdf', [SupplierController::class, 'pdf'])->name('supplier.pdf');
+    Route::get('supplier/export/excel', [SupplierController::class, 'exportExcel'])->name('supplier.excel');
 
 
 

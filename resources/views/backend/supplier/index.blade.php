@@ -18,7 +18,7 @@
             <!-- DIRECT CHAT -->
             <div class="card direct-chat direct-chat-primary mb-4">
                 <div class="card-header">
-                    <h3 class="card-title">{{ __('Supplier') }}</h3>
+                    <h3 class="card-title">{{ __('Supplier List') }}</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse">
                             <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
@@ -35,8 +35,9 @@
                             <div class="ui buttons tiny">
                                 <button class="ui button" id="printButton"><i
                                         class="bi bi-printer icon"></i>{{ __('Print') }}</button>
-                                <a href="{{ route('fuel-type-price.pdf') }}" class="ui button" id="pdfButton"><i class="bi bi-file-pdf icon"></i>{{ __('PDF') }}</a>
-                                <a href="{{ route('fuel-type-price.excel') }}" class="ui button" id="excelButton"><i
+                                <a href="{{ route('supplier.pdf') }}" class="ui button" id="pdfButton"><i
+                                        class="bi bi-file-pdf icon"></i>{{ __('PDF') }}</a>
+                                <a href="{{ route('supplier.excel') }}" class="ui button" id="excelButton"><i
                                         class="bi bi-file-earmark-spreadsheet icon"></i>{{ __('Excel') }}</a>
                             </div>
                         </div>
@@ -50,50 +51,63 @@
                                 <thead>
                                     <tr>
                                         <th scope="col" class="text-start">{{ __('No.') }}</th>
-                                        <th scope="col">{{ __('Fuel Type') }}</th>
-                                        <th scope="col" class="text-start">{{ __('Fuel Price') }}</th>
-                                        <th scope="col" class="text-start">{{ __('Editor Name') }}</th>
-                                        <th scope="col" class="text-start" colspan="2">{{ __('Edit Date') }}</th>
+                                        <th scope="col" class="text-start">{{ __('Supplier ID') }}</th>
+                                        <th scope="col" class="text-start">{{ __('Supplier Name') }}</th>
+                                        <th scope="col" class="text-start">{{ __('Contact Info') }}</th>
+                                        <th scope="col" class="text-start" style="width: 20%">{{ __('Address') }}</th>
+                                        <th scope="col" class="text-start" colspan="2">{{ __('Create Info') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
                                         $i = 1;
                                     @endphp
-                                    @foreach ($fuels as $fuel)
-                                        <tr class="{{ $fuel->visibility == 0 ? 'text-danger' : '' }}">
+                                    @foreach ($suppliers as $item)
+                                        <tr class="{{ $item->delete_status == 0 ? 'text-danger' : '' }}">
                                             <th scope="row"
-                                                class="text-center {{ $fuel->visibility == 0 ? 'text-danger' : '' }}">
+                                                class="text-center {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
                                                 {{ $i }}</th>
-                                            <td class="text {{ $fuel->visibility == 0 ? 'text-danger' : '' }}">
-                                                <p>{{ $fuel->fuel_type_kh }}</p>
-                                                <p class="text-capitalize">{{ $fuel->fuel_type_en }}</p>
+
+                                            <td class="text-start {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
+                                                {{ $item->supplier_code }}
                                             </td>
-                                            <td class="text-start {{ $fuel->visibility == 0 ? 'text-danger' : '' }}"><i
-                                                    class="bi bi-currency-dollar icon text-muted"></i>{{ $fuel->today_price }}
+
+                                            <td class="text {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
+                                                <p>{{ $item->fullname_kh }}</p>
+                                                <p class="text-capitalize">{{ $item->fullname_en }}</p>
                                             </td>
-                                            <td class="text {{ $fuel->visibility == 0 ? 'text-danger' : '' }}">
-                                                <p>{{ $fuel->user->fullname_kh }}</p>
-                                                <p class="text-capitalize">{{ $fuel->user->fullname_en }}</p>
+
+                                            <td
+                                                class="text-start text {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
+                                                <p> <i class="bi bi-envelope-at icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}"></i>
+                                                    <a href="mailto:{{ $item->email }}" class="{{ $item->delete_status == 0 ? 'text-danger' : 'stretched-link' }}">{{ $item->email }}</a>
+                                                </p>
+                                                <p><i class="bi bi-telephone icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}"></i>
+                                                    <a href="tel:{{ $item->phone }}" class="{{ $item->delete_status == 0 ? 'text-danger' : 'stretched-link' }}">{{ $item->phone }}</a>
+                                                </p>
                                             </td>
-                                            <td class="{{ $fuel->visibility == 0 ? 'text-danger' : '' }}">
-                                                {{ Carbon\Carbon::parse($fuel->updated_at)->format('d m Y - h:i:s A') }}
+
+                                            <td class="text {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
+                                                {{ $item->address }}
                                             </td>
-                                            <td class="text-end {{ $fuel->visibility == 0 ? 'text-danger' : '' }}">
-                                                <div
-                                                    class="ui mini label text-start {{ $fuel->visibility == 1 ? 'green' : 'red' }}">
-                                                    {{ $fuel->visibility == 1 ? __('Show') : __('Hidden') }}</div>
+                                            <td class="text {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
+                                                <p>{{ $item->user->fullname_kh }}</p>
+                                                <p class="text-capitalize">{{ $item->user->fullname_en }}</p>
+                                                <p class="{{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}">
+                                                    {{ Carbon\Carbon::parse($item->updated_at)->format('d m Y - h:i:s A') }}
+                                                </p>
+                                            </td>
+                                            <td class="text-end {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
                                                 <div
                                                     class="ui scrolling pointing icon button nimi p-1 circular dropdown dropdown{{ $i }}">
                                                     <i class="bi bi-three-dots-vertical icon"></i>
                                                     <div class="menu left">
-                                                        <a href="{{ route('fuel-type-price.edit', $fuel->id) }}"
-                                                            class="item"><i
-                                                                class="bi bi-pencil-square icon"></i>{{ __('Edit Fuel') }}</a>
-                                                        <div class="item"
-                                                            id="{{ $fuel->visibility == 1 ? 'buttonHide' : 'buttonShow' }}"
-                                                            data-id="{{ $fuel->id }}"><i
-                                                                class="bi {{ $fuel->visibility == 1 ? 'bi-eye-slash-fill' : 'bi-eye-fill' }} icon"></i>{{ $fuel->visibility == 1 ? __('Hide Fuel') : __('Show Fuel') }}
+                                                        <a href="{{ route('supplier.edit', $item->id) }}" class="item"><i
+                                                                class="bi bi-pencil-square icon"></i>{{ __('Update') }}</a>
+                                                        <div class="item" data-id="{{ $item->id }}"
+                                                            id="{{ $item->delete_status == 1 ? 'buttonHide' : 'buttonShow' }}"
+                                                            data-id="{{ $item->id }}"><i
+                                                                class="bi {{ $item->delete_status == 1 ? 'bi-trash' : 'bi-recycle' }} icon"></i>{{ $item->delete_status == 1 ? __('Move to Trash') : __('Restore') }}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -117,12 +131,12 @@
 @endsection
 
 @section('js')
-    @if ($fuels != null)
+    @if ($suppliers != null)
         <script>
             @php
                 $i = 1;
             @endphp
-            @foreach ($fuels as $index => $student)
+            @foreach ($suppliers as $index => $student)
                 $(".ui.dropdown{{ $i++ }}").dropdown();
             @endforeach
         </script>
@@ -131,12 +145,15 @@
         $(document).ready(function() {
             $(document).on('click', '#buttonHide', function() {
                 let id = $(this).data('id');
+                var url = "{{ route('supplier.destroy', ':id') }}".replace(':id', id);
+                let button = $(this); // Store the button reference
+
                 Swal.fire({
-                    title: "{{ __('Hide Fuel') }}",
-                    text: "{{ __('Are you sure you want to hide this fuel?') }}",
+                    title: "{{ __('Move to Trash') }}",
+                    text: "{{ __('Are you sure you want to move to trash?') }}",
                     icon: "question",
-                    iconHtml: "<i class='bi bi-eye-slash-fill icon'></i>",
-                    confirmButtonText: "{{ __('Yes, Hide it') }}",
+                    iconHtml: "<i class='bi bi-trash-fill icon'></i>",
+                    confirmButtonText: "{{ __('Yes, Move it') }}",
                     cancelButtonText: "{{ __('No, Cancel') }}",
                     showCancelButton: true,
                     showCloseButton: true,
@@ -144,42 +161,58 @@
                     cancelButtonColor: '#d33',
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        // Disable the button to prevent double submission
+                        button.prop('disabled', true);
+
+
                         $.ajax({
-                            url: "{{ route('fuel-type-price.hide') }}",
-                            type: 'POST',
+                            url: url,
+                            type: 'DELETE',
                             data: {
                                 _token: '{{ csrf_token() }}',
                                 id: id
                             },
                             success: function(response) {
-
                                 Swal.fire({
-                                    title: response.message,
+                                    title: "{{ __('Success') }}",
+                                    text: response.message,
                                     icon: "success",
                                     draggable: true,
                                     showConfirmButton: false,
                                     timer: 3000
                                 });
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
                             },
                             error: function(xhr) {
-                                console.error(xhr);
+                                Swal.fire({
+                                    title: "{{ __('Error') }}",
+                                    text: xhr.responseJSON.message ||
+                                        "{{ __('Something went wrong!') }}",
+                                    icon: "error",
+                                    confirmButtonText: "{{ __('Okay') }}"
+                                });
+                            },
+                            complete: function() {
+                                // Re-enable the button after the request is complete
+                                button.prop('disabled', false);
                             }
                         });
-                        setTimeout(function() {
-                            location.reload();
-                        }, 1200);
                     }
                 });
             });
 
             $(document).on('click', '#buttonShow', function() {
                 let id = $(this).data('id');
+                var url = "{{ route('supplier.destroy', ':id') }}".replace(':id', id);
+
                 Swal.fire({
-                    title: "{{ __('Show Fuel') }}",
-                    text: "{{ __('Are you sure you want to show this fuel?') }}",
+                    title: "{{ __('Restore') }}",
+                    text: "{{ __('Are you sure you want to restore?') }}",
                     icon: "question",
-                    iconHtml: "<i class='bi bi-eye-fill icon'></i>",
-                    confirmButtonText: "{{ __('Yes, Show it') }}",
+                    iconHtml: "<i class='bi bi-arrow-clockwise icon'></i>",
+                    confirmButtonText: "{{ __('Yes, Restore it') }}",
                     cancelButtonText: "{{ __('No, Cancel') }}",
                     showCancelButton: true,
                     showCloseButton: true,
@@ -187,41 +220,54 @@
                     cancelButtonColor: '#d33',
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        // Disable the button to prevent double submission
+                        $(this).prop('disabled', true);
+
                         $.ajax({
-                            url: "{{ route('fuel-type-price.hide') }}",
-                            type: 'POST',
+                            url: url,
+                            type: 'DELETE',
                             data: {
                                 _token: '{{ csrf_token() }}',
                                 id: id
                             },
                             success: function(response) {
-
                                 Swal.fire({
-                                    title: response.message,
+                                    title: "{{ __('Success') }}",
+                                    text: response.message,
                                     icon: "success",
                                     draggable: true,
                                     showConfirmButton: false,
                                     timer: 3000
                                 });
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
                             },
                             error: function(xhr) {
-                                console.error(xhr);
+                                Swal.fire({
+                                    title: "{{ __('Error') }}",
+                                    text: xhr.responseJSON.message ||
+                                        "{{ __('Something went wrong!') }}",
+                                    icon: "error",
+                                    confirmButtonText: "{{ __('Okay') }}"
+                                });
+                            },
+                            complete: function() {
+                                // Re-enable the button after the request is complete
+                                $(this).prop('disabled', false);
                             }
                         });
-                        setTimeout(function() {
-                            location.reload();
-                        }, 1200);
                     }
                 });
             });
 
-            $(document).on('click', '#pdfButton', function () {
+            $(document).on('click', '#pdfButton', function() {
                 $.ajax({
                     type: "get",
                     url: "{{ route('fuel-type-price.pdf') }}",
                     data: "data",
                     dataType: "json",
-                    success: function (response) {
+                    success: function(response) {
 
                     }
                 });

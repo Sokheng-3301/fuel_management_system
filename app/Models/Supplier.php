@@ -10,6 +10,7 @@ class Supplier extends Model
     use HasFactory;
     protected $table = 'suppliers';
     protected $fillable = [
+        'supplier_code',
         'fullname_kh',
         'fullname_en',
         'email',
@@ -20,18 +21,16 @@ class Supplier extends Model
         'deleted_by',
         'deleted_date',
     ];
-    protected $casts = [
-        'delete_status' => 'integer',
-        'deleted_date' => 'datetime',
-    ];
+
 
     public function fuels()
     {
         return $this->hasMany(Fuel::class, 'supplier_id');
     }
 
-    public function createdBy()
-    {
-        return $this->belongsTo(User::class, 'created_by');
+     public function user() {
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
+
+
 }
