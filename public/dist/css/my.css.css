@@ -1,0 +1,214 @@
+@font-face {
+    font-family: 'Akbaltom Nagar';
+    src: url('/fonts/AKbalthom-Naga.ttf') format('truetype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/Poppins-Regular.ttf') format('truetype');
+    font-weight: normal;
+}
+
+* {
+    font-family: 'Poppins', 'Lato', 'Helvetica Neue', 'Akbaltom Nagar', sans-serif !important;
+    /* font-family: 'Lato', 'Helvetica Neue', 'Siemreap', sans-serif !important; */
+}
+
+/* input {
+    autocomplete: off !important;
+} */
+nav ul li a,
+nav ul li p {
+    font-size: 98% !important;
+}
+
+.file-upload {
+    border: 2px dashed #a2a2a2;
+    width: 100%;
+    border-radius: 6px;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    cursor: pointer;
+    height: auto;
+    background-color: #ecececcc;
+    padding: 15px;
+    transition: all 0.2s ease-in-out;
+}
+
+.file-upload:hover {
+    border-color: #0096bf;
+    background-color: #ffffff;
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.298);
+}
+
+.file-upload img {
+    margin: auto;
+}
+
+/* input:disabled,
+select:disabled,
+textarea:disabled {
+
+    background-color: #e0e0e0 !important;
+    color: #000000 !important;
+    border: 1px solid #434343 !important;
+
+} */
+
+input:hover,
+select:hover,
+textarea:hover {
+
+    input:disabled,
+    select:disabled,
+    textarea:disabled {
+        background-color: #e0e0e0 !important;
+        color: #000000 !important;
+        border: 1px solid #434343 !important;
+        cursor: not-allowed !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .myresponsive {
+        width: 1000px !important;
+        background-color: transparent !important;
+        overflow-x: scroll !important;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background-color: transparent !important;
+        height: 1px !important;
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+        background-color: transparent !important;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .table-responsive {
+        overflow: visible !important;
+    }
+}
+
+#myTable thead th:first-child {
+    width: 6% !important;
+}
+
+table td.text p {
+    margin: 0;
+    padding: 0;
+    line-height: 22px !important;
+}
+
+
+#scrollTop {
+    position: fixed;
+    bottom: 35px;
+    right: 20px;
+    width: 37px;
+    height: 37px;
+    background-color: #363a3fb5;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #00000076;
+    text-align: center;
+}
+
+#preload-grettings {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffff;
+    z-index: 1000000;
+    flex-direction: column;
+    /* top: -500px; */
+}
+
+
+.loader {
+    height: 6px;
+    width: 200px;
+    --c: no-repeat linear-gradient(#7a9b3d 0 0);
+    background: var(--c), var(--c), #dadada;
+    background-size: 60% 100%;
+    animation: l16 3s infinite;
+}
+
+@keyframes l16 {
+    0% {
+        background-position: -150% 0, -150% 0
+    }
+
+    66% {
+        background-position: 250% 0, -150% 0
+    }
+
+    100% {
+        background-position: 250% 0, 250% 0
+    }
+}
+
+.a-profile {
+    text-decoration: none;
+    color: #575757;
+    font-size: 1.5rem;
+    padding: 0.05rem 0.7rem;
+}
+
+.a-profile:hover {
+    color: #313131;
+}
+
+.fix-height {
+    min-height: 100vh !important;
+}
+
+.bg-profile {
+    background-color: darkgreen !important;
+}
+
+
+/* Table loader */
+/* .table-responsive{
+    position: absolute !important;
+} */
+.bg-table-loader {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 90;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 12px;
+  height: 12px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  animation: l5 1s infinite linear alternate;
+}
+@keyframes l5 {
+    0%  {box-shadow: 20px 0 #000, -20px 0 #0002;background: #000 }
+    33% {box-shadow: 20px 0 #000, -20px 0 #0002;background: #0002}
+    66% {box-shadow: 20px 0 #0002,-20px 0 #000; background: #0002}
+    100%{box-shadow: 20px 0 #0002,-20px 0 #000; background: #000 }
+}
