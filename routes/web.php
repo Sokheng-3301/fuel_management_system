@@ -1,11 +1,12 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FuelsController;
-use App\Http\Controllers\FuelTypeandPriceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SetlangController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\FuelTypeandPriceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,10 @@ Route::middleware(['lang', 'auth', 'active.menu'])->group(function () {
     Route::get('fuel/export/pdf', [FuelTypeandPriceController::class, 'pdf'])->name('fuel-type-price.pdf');
     Route::get('fuel/export/excel', [FuelTypeandPriceController::class, 'exportExcel'])->name('fuel-type-price.excel');
     // Route::get('fuel.asp', [FuelsController::class,'index'])->name('fuel.asp.index');
+
+    // Supplier Route
+    Route::resource('supplier', SupplierController::class)->names('supplier');
+
 
 
 });

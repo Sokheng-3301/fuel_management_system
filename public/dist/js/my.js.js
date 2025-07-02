@@ -4,8 +4,8 @@ $('select.dropdown2').dropdown();
 $('select.dropdown3').dropdown();
 $('select.dropdown4').dropdown();
 $('select.dropdown5').dropdown();
-$( "#datepicker" ).datepicker();
-$( "#birth_date_spouse" ).datepicker();
+$("#datepicker").datepicker();
+$("#birth_date_spouse").datepicker();
 // $( "#datepicker1" ).datepicker();
 // $( "#datepicker2" ).datepicker();
 // $( "#datepicker3" ).datepicker();
@@ -30,14 +30,20 @@ $(document).ready(function () {
         $("#PraiseBlamerecieveDate" + i).datepicker();
         $("#cultural_recieveDate" + i).datepicker();
         $("#last_interest_date" + i).datepicker();
-        $('#birth_date'+i).datepicker();
+        $('#birth_date' + i).datepicker();
+
+
 
     }
     $("#dated").datepicker();
 
-     window.addEventListener('load', function() {
+    window.addEventListener('load', function () {
         $('.bg-table-loader').hide(1000);
     });
+
+    for (var i = 1; i <= 50; i++) {
+        $('.select_search' + i).selectpicker();
+    }
 });
 // $( "#datepicker7" ).datepicker();
 // $( "#datepicker8" ).datepicker();
@@ -51,19 +57,19 @@ $(document).ready(function () {
 // $( "#datepicker16" ).datepicker();
 // $('#preload-submit').hide();
 
-$('form').submit(function() {
+$('form').submit(function () {
     var submitButton = $('button[type="submit"]');
     submitButton.prop('disabled', true);
     submitButton.addClass('loading');
 
-    setTimeout(function() {
+    setTimeout(function () {
         submitButton.prop('disabled', false);
         submitButton.removeClass('loading');
     }, 3000);
 });
 
 
-$('#printButton').on('click', function(){
+$('#printButton').on('click', function () {
     window.print();
 });
 // $(document).ready(function () {

@@ -29,7 +29,7 @@
                             <div class="col-md-6 field">
                                 <div class="field">
                                     <label for="fuelType">{{__("Fuel Type")}} <span class="text-danger">*</span></label>
-                                    <select name="fuel_type_id" id="fuelType" class="ui dropdown" autofocus>
+                                    <select name="fuel_type_id"  class="ui dropdown" autofocus id="fuelType">
                                         <option value="">{{__("Select fuel type")}}</option>
                                         <option value="1">Type1</option>
                                     </select>
