@@ -3,11 +3,6 @@
     {{ __('Supplier') }}
 @endsection
 @section('css')
-    {{-- <link rel="stylesheet" href="{{ asset('css/backend/fuel-type.css') }}"> --}}
-    <style>
-        /* HTML: <div class="loader"></div> */
-        /* HTML: <div class="loader"></div> */
-    </style>
 @endsection
 @section('content')
     <!--begin::Row-->
@@ -59,34 +54,31 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @php
-                                        $i = 1;
-                                    @endphp
-                                    @foreach ($suppliers as $item)
+                                    @foreach ($suppliers as $index => $item)
                                         <tr class="{{ $item->delete_status == 0 ? 'text-danger' : '' }}">
                                             <th scope="row"
                                                 class="text-center {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
-                                                {{ $i }}</th>
-
+                                                {{ $index + 1 }}
+                                            </th>
                                             <td class="text-start {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
                                                 {{ $item->supplier_code }}
                                             </td>
-
                                             <td class="text {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
                                                 <p>{{ $item->fullname_kh }}</p>
                                                 <p class="text-capitalize">{{ $item->fullname_en }}</p>
                                             </td>
-
-                                            <td
-                                                class="text-start text {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
-                                                <p> <i class="bi bi-envelope-at icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}"></i>
-                                                    <a href="mailto:{{ $item->email }}" class="{{ $item->delete_status == 0 ? 'text-danger' : 'stretched-link' }}">{{ $item->email }}</a>
+                                            <td class="text-start text {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
+                                                <p>
+                                                    <i
+                                                        class="bi bi-envelope-at icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}"></i>
+                                                    <a class="{{ $item->delete_status == 0 ? 'text-danger' : '' }}" href="mailto:{{ $item->email }}">{{ $item->email }}</a>
                                                 </p>
-                                                <p><i class="bi bi-telephone icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}"></i>
-                                                    <a href="tel:{{ $item->phone }}" class="{{ $item->delete_status == 0 ? 'text-danger' : 'stretched-link' }}">{{ $item->phone }}</a>
+                                                <p>
+                                                    <i
+                                                        class="bi bi-telephone icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}"></i>
+                                                    <a class="{{ $item->delete_status == 0 ? 'text-danger' : '' }}" href="tel:{{ $item->phone }}">{{ $item->phone }}</a>
                                                 </p>
                                             </td>
-
                                             <td class="text {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
                                                 {{ $item->address }}
                                             </td>
@@ -99,23 +91,22 @@
                                             </td>
                                             <td class="text-end {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
                                                 <div
-                                                    class="ui scrolling pointing icon button nimi p-1 circular dropdown dropdown{{ $i }}">
+                                                    class="ui scrolling pointing icon button nimi p-1 circular dropdown dropdown{{ $index + 1 }}">
                                                     <i class="bi bi-three-dots-vertical icon"></i>
                                                     <div class="menu left">
-                                                        <a href="{{ route('supplier.edit', $item->id) }}" class="item"><i
-                                                                class="bi bi-pencil-square icon"></i>{{ __('Update') }}</a>
+                                                        <a href="{{ route('supplier.edit', $item->id) }}" class="item">
+                                                            <i class="bi bi-pencil-square icon"></i> {{ __('Update') }}
+                                                        </a>
                                                         <div class="item" data-id="{{ $item->id }}"
-                                                            id="{{ $item->delete_status == 1 ? 'buttonHide' : 'buttonShow' }}"
-                                                            data-id="{{ $item->id }}"><i
-                                                                class="bi {{ $item->delete_status == 1 ? 'bi-trash' : 'bi-recycle' }} icon"></i>{{ $item->delete_status == 1 ? __('Move to Trash') : __('Restore') }}
+                                                            id="{{ $item->delete_status == 1 ? 'buttonHide' : 'buttonShow' }}">
+                                                            <i
+                                                                class="bi {{ $item->delete_status == 1 ? 'bi-trash-fill' : 'bi-recycle' }} icon"></i>
+                                                            {{ $item->delete_status == 1 ? __('Move to Trash') : __('Restore') }}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </td>
                                         </tr>
-                                        @php
-                                            $i++;
-                                        @endphp
                                     @endforeach
                                 </tbody>
                             </table>
@@ -131,16 +122,14 @@
 @endsection
 
 @section('js')
-    @if ($suppliers != null)
-        <script>
-            @php
-                $i = 1;
-            @endphp
-            @foreach ($suppliers as $index => $student)
-                $(".ui.dropdown{{ $i++ }}").dropdown();
-            @endforeach
-        </script>
-    @endif
+    <script>
+        @php
+            $i = 1;
+        @endphp
+        @foreach ($suppliers as $index => $supplier)
+            $(".dropdown{{ $i++ }}").dropdown();
+        @endforeach
+    </script>
     <script>
         $(document).ready(function() {
             $(document).on('click', '#buttonHide', function() {

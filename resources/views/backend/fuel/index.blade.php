@@ -17,7 +17,8 @@
                             <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
                             <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
                         </button>
-                        <a href="{{ route('fuel.create') }}" class="ui button small blue"><i class="bi bi-plus-circle-fill icon"></i>{{ __('Add new') }}</a>
+                        <a href="{{ route('fuel.create') }}" class="ui button small blue"><i
+                                class="bi bi-plus-circle-fill icon"></i>{{ __('Add new') }}</a>
                     </div>
                 </div>
                 <!-- /.card-header -->
@@ -25,9 +26,11 @@
                     <div class="row">
                         <div class="col-md-12 mb-4">
                             <div class="ui buttons tiny">
-                                <button class="ui button"  id="printButton"><i class="bi bi-printer icon"></i>{{ __('Print') }}</button>
+                                <button class="ui button" id="printButton"><i
+                                        class="bi bi-printer icon"></i>{{ __('Print') }}</button>
                                 <button class="ui button"><i class="bi bi-file-pdf icon"></i>{{ __('PDF') }}</button>
-                                <button class="ui button"><i class="bi bi-file-earmark-spreadsheet icon"></i>{{ __('Excel') }}</button>
+                                <button class="ui button"><i
+                                        class="bi bi-file-earmark-spreadsheet icon"></i>{{ __('Excel') }}</button>
                             </div>
                         </div>
                     </div>
@@ -39,38 +42,68 @@
                             <table class="table table-hover" id="myTable">
                                 <thead>
                                     <tr>
-                                        <th scope="col" class="text-start">{{__('S.R')}}</th>
-                                        <th scope="col">{{__('Fuel Type')}}</th>
-                                        <th scope="col">{{__('Fuel Code')}}</th>
-                                        <th scope="col">{{__('Supplier')}}</th>
-                                        <th scope="col">{{__('Quantity')}}</th>
-                                        <th scope="col" class="text-start">{{__('Purchase Price')}}</th>
-                                        <th scope="col" colspan="2" class="text-start">{{__('Date')}}</th>
+                                        <th scope="col" class="text-start">{{ __('No.') }}</th>
+                                        <th scope="col">{{ __('Fuel Code') }}</th>
+                                        <th scope="col">{{ __('Fuel Type') }}</th>
+                                        <th scope="col">{{ __('Supplier') }}</th>
+                                        <th scope="col">{{ __('Quantity') }}</th>
+                                        <th scope="col" class="text-start">{{ __('Unit Price') }}</th>
+                                        <th scope="col" class="text-start">{{ __('Total Price') }}</th>
+                                        <th scope="col" colspan="2" class="text-start">{{ __('Date Listed') }}</th>
                                         {{-- <th scope="col">{{__('Actions')}}</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @for($i=1; $i<=30; $i++)
+                                    @foreach ($fuels as $key => $item)
                                         <tr>
-                                            <th scope="row" class="text-center">{{$i}}</th>
-                                            <td>Mark</td>
-                                            <td>#Otto</td>
-                                            <td>@mdo</td>
-                                            <td>1000<span class="ps-2 text-muted">{{__('L')}}</span></td>
-                                            <td class="text-start"><i class="bi bi-currency-dollar icon text-muted"></i>2000</td>
-                                            <td class="text-start text-muted">{{\Carbon\Carbon::parse(now())->format('d.m.Y - h:i:s A')}}</td>
+                                            <th scope="row"
+                                                class="text-center {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
+                                                {{ $key + 1 }}</th>
+                                            <td
+                                                class="text-uppercase {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
+                                                {{ $item->fuel_code }}</td>
+                                            <td class="text {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
+                                                <p>{{ $item->fuelType->fuel_type_kh }}</p>
+                                                <p class="text-capitalize">{{ $item->fuelType->fuel_type_en }}</p>
+                                            </td>
+
+                                            <td class="text {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
+                                                <p>{{ $item->supplier->fullname_kh }}</p>
+                                                <p class="text-capitalize">{{ $item->supplier->fullname_en }}</p>
+                                            </td>
+                                            <td class="{{ $item->delete_status == 0 ? 'text-danger' : '' }}">
+                                                {{ $item->qty ?? '0.00' }}<span
+                                                    class="ps-2 text-muted">{{ __('L') }}</span></td>
+                                            <td class="text-start {{ $item->delete_status == 0 ? 'text-danger' : '' }}"><i
+                                                    class="bi bi-currency-dollar icon text-muted"></i>{{ $item->unit_price ?? '0.00' }}
+                                            <td class="text-start {{ $item->delete_status == 0 ? 'text-danger' : '' }}"><i
+                                                    class="bi bi-currency-dollar icon text-muted"></i>{{ $item->total_price ?? '0.00' }}
+                                            </td>
+                                            <td
+                                                class="text-start {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}">
+                                                {{ \Carbon\Carbon::parse($item->created_at)->format('d m Y - h:i:s A') }}
+                                            </td>
                                             <td class="text-end">
-                                                <div class="ui scrolling pointing icon button nimi p-1 circular dropdown dropdown{{ $i }}">
+                                                <div
+                                                    class="ui scrolling pointing icon button nimi p-1 circular dropdown dropdown{{ $key + 1 }}">
                                                     <i class="bi bi-three-dots-vertical icon"></i>
                                                     <div class="menu left">
-                                                        <div class="item"><i class="bi bi-eye-fill icon"></i>{{__("About Fuel")}}</div>
-                                                        <div class="item"><i class="bi bi-pencil-square icon"></i>{{__("Edit Fuel")}}</div>
-                                                        <div class="item"><i class="bi bi-trash-fill icon"></i>{{__("Remove Fuel")}}</div>
+                                                        <div class="item"><i
+                                                                class="bi bi-eye-fill icon"></i>{{ __('About Fuel') }}
+                                                        </div>
+                                                        <a href="{{ route('fuel.edit', $item->id) }}" class="item"><i
+                                                                class="bi bi-pencil-square icon"></i>{{ __('Edit Fuel') }}
+                                                        </a>
+                                                        <div class="item" data-id="{{ $item->id }}"
+                                                            id="{{ $item->delete_status == 0 ? 'restoreButton' : 'deleteButton' }}">
+                                                            <i class="bi bi-trash-fill icon"></i>
+                                                            {{ $item->delete_status == 0 ? __('Retore') : __('Move to Trash') }}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endfor
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -88,19 +121,15 @@
 
 @section('js')
     <script>
-        $('.ui.dropdown')
-        .dropdown()
-        ;
-        $(document).ready(function () {
-            // $('nav ul li a').removeClass('active'); // Remove 'active' class from all links
-            // $('#fuelInventory .main-link').addClass('active'); // Add 'menu-open' class to #fuelInventory
-            // $('#fuelInventory').addClass('menu-open'); // Add 'menu-open' class to #fuelInventory
-            // $('#fuelInventory .manage a').addClass('active'); // Add 'active' class to .manage under #fuelInventory
-        });
-
+        @php
+            $i = 1;
+        @endphp
+        @foreach ($fuels as $index => $supplier)
+            $(".dropdown{{ $i++ }}").dropdown();
+        @endforeach
     </script>
 
-     <script>
+    <script>
         $(document).ready(function() {
             $(document).on('click', '#buttonHide', function() {
                 let id = $(this).data('id');
@@ -188,18 +217,17 @@
                 });
             });
 
-            $(document).on('click', '#pdfButton', function () {
+            $(document).on('click', '#pdfButton', function() {
                 $.ajax({
                     type: "get",
                     url: "{{ route('fuel-type-price.pdf') }}",
                     data: "data",
                     dataType: "json",
-                    success: function (response) {
+                    success: function(response) {
 
                     }
                 });
             });
         });
     </script>
-
 @endsection

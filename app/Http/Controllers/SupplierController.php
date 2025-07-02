@@ -77,7 +77,11 @@ class SupplierController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // Find the supplier by ID
+        $data['item'] = Supplier::findOrFail($id);
+        $data['update'] = true; // Flag to indicate this is an update operation
+        // Return the view for editing the supplier
+        return view('backend.supplier.form', $data);
     }
 
     /**
@@ -85,7 +89,29 @@ class SupplierController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'fullname_kh' => 'required|string|max:255',
+            'fullname_en' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'address' => 'required|string|max:255',
+        ]);
+
+        // Find the supplier by ID
+        $supplier = Supplier::findOrFail($id);
+
+        // Update the supplier details
+        $supplier->update([
+            'fullname_kh' => $request->input('fullname_kh'),
+            'fullname_en' => $request->input('fullname_en'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            'address' => $request->input('address'),
+            'updated_by' => auth()->user()->id, // Assuming the user is authenticated
+        ]);
+
+        // Redirect to the suppliers index with a success message
+        return redirect()->route('supplier.index')->with('success', __('Supplier updated successfully.'));
     }
 
     /**

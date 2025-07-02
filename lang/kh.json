@@ -137,5 +137,17 @@
     "Yes, Restore it" : "បាទ/ចាស! ស្ដារឡើងវិញវា",
     "Supplier moved to trash successfully." : "ផ្លាស់ទីអ្នកផ្គត់ផ្គង់ទៅធុងសំរាមបានជោគជ័យ",
     "Supplier restored successfully." : "ស្ដារអ្នកផ្គត់ផ្គង់បានជោគជ័យ",
-    "Supplier not found." : "មិនមានអ្នកផ្គត់ផ្គង់ទេ"
+    "Supplier not found." : "មិនមានអ្នកផ្គត់ផ្គង់ទេ",
+    "Supplier updated successfully." : "ធ្វើបច្ចុប្បន្នភាពអ្នកផ្គត់ផ្គង់បានជោគជ័យ",
+    "Unit Price" : "តម្លៃឯកតា",
+    "Total Price" : "តម្លៃសរុប",
+    "Please select Fuel Type" : "សូមជ្រើសរើសប្រភេទឥន្ធនៈ",
+    "Please select Supplier" : "សូមជ្រើសរើសអ្នកផ្គត់ផ្គង់",
+    "Please enter Quantity (Liter)" : "សូមបញ្ចូលបរិមាណ (លីត្រ)",
+    "Please enter Purchase Price" : "សូមបញ្ចូលតម្លៃទិញ",
+    "Please enter Unit Price" : "សូមបញ្ចូលតម្លៃឯកតា",
+    "Total Price are not empty" : "តម្លៃសរុបមិនអាចទទេនោះទេ",
+    "Add fuel instock successfully" : "បន្ថែមប្រេងឥន្ធនៈក្នុងស្តុកបានជោគជ័យ",
+    "Add fuel instock failed" : "បន្ថែមប្រេងឥន្ធនៈក្នុងស្តុកបានបរាជ័យ",
+    "Date Listed" : "កាលបរិច្ឆេទចុះបញ្ជី"
 }

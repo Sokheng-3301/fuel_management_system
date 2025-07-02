@@ -27,7 +27,12 @@
                                 <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
                                 <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
                             </button>
-                            <button type="reset" class="ui button small">{{ __('Reset') }}</button>
+                            @if ($update)
+                                <a href="{{ route('supplier.index') }}"
+                                    class="ui button small">{{ __('Supplier List') }}</a>
+                            @else
+                                <button type="reset" class="ui button small">{{ __('Reset') }}</button>
+                            @endif
                             <button type="submit" class="ui button small {{ $update ? 'teal' : 'blue' }}"><i
                                     class="bi {{ $update ? 'bi-pencil-square' : 'bi-bookmark-check-fill' }} icon"></i>
                                 {{ $update ? __('Update') : __('Save') }}
@@ -70,7 +75,8 @@
                                     <label for="emailAddress">{{ __('Email Address') }} <span
                                             class="text-danger">*</span></label>
                                     <div class="ui input labeled">
-                                        <label for="emailAddress" class="ui label"><i class="bi bi-envelope-at-fill"></i></label>
+                                        <label for="emailAddress" class="ui label"><i
+                                                class="bi bi-envelope-at-fill"></i></label>
                                         <input type="email" id="emailAddress" name="email" class="ui input"
                                             value="{{ $update ? $item->email : old('email') }}" autofocus
                                             placeholder="{{ __('Email Address') }}">
@@ -84,7 +90,8 @@
                                     <label for="phoneNumber">{{ __('Contact Number') }} <span
                                             class="text-danger">*</span></label>
                                     <div class="ui input labeled">
-                                        <label for="phoneNumber" class="ui label"><i class="bi bi-telephone-fill"></i></label>
+                                        <label for="phoneNumber" class="ui label"><i
+                                                class="bi bi-telephone-fill"></i></label>
                                         <input type="tel" id="phoneNumber" name="phone"
                                             value="{{ $update ? $item->phone : old('phone') }}"
                                             placeholder="{{ __('Contact Number') }}">

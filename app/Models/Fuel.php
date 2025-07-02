@@ -28,6 +28,16 @@ class Fuel extends Model
         'deleted_date',
     ];
 
-
-    
+    public function fuelType()
+    {
+        return $this->belongsTo(FuelType::class, 'fuel_type_id');
+    }
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }
