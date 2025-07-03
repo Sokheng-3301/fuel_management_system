@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\FuelInventoryExport;
 use App\Models\Fuel;
 use App\Models\FuelType;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
 use function Laravel\Prompts\error;
+
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use KhmerPdf\LaravelKhPdf\Facades\PdfKh;
 
 class FuelsController extends Controller
 {
@@ -56,7 +59,7 @@ class FuelsController extends Controller
             'qty' => $request->qty,
             'unit_price' => $request->unit_price,
             'total_price' => $request->total_price,
-            'fuel_code' => 'FUEL-' . time() . '-' . rand(1000, 9999),
+            'fuel_code' => 'FUEL-' . time() . '-' . rand(100, 9999),
             'fuel_specification' => $request->fuel_specification,
             'note' => $request->note,
             'created_by' => @Auth::user()->id,
@@ -74,28 +77,23 @@ class FuelsController extends Controller
      */
     public function show(string $id)
     {
-        $fuel = Fuel::with(['fuelType', 'supplier', 'user'])->find($id);
-
-        if (!$fuel) {
-            return response()->json([
-                'status' => false,
-                'message' => __('Fuel not found'),
-            ], 404);
-        }
+        $fuel = Fuel::with(['fuelType', 'supplier', 'user'])->findOrFail($id);
 
         return response()->json([
             'status' => true,
             'fuelCode' => $fuel->fuel_code,
-            'fuelType' => $fuel->fuelType->fuel_type_kh . ' - ' . $fuel->fuelType->fuel_type_en,
+            'fuelTypeData' => $fuel->fuelType->fuel_type_kh . ' - ' . $fuel->fuelType->fuel_type_en,
             'supplier' => $fuel->supplier->fullname_kh . ' - ' . $fuel->supplier->fullname_en,
-            'qty' => $fuel->qty . " " . __("L"),
+            'qty' => $fuel->qty ? $fuel->qty . " " . __('L') : '0.00 ' . __('L'),
             'unitPrice' => $fuel->unit_price,
             'totalPrice' => $fuel->total_price,
             'createdBy' => $fuel->user->fullname_kh . ' - ' . $fuel->user->fullname_en,
-            'createdAt' => $fuel->created_at->format('d m Y h:i:s A'),
+            'createdAt' => $fuel->created_at instanceof \Carbon\Carbon ?
+                $fuel->created_at->format('d m Y h:i:s A') : $fuel->created_at,
             'delete_status' => $fuel->delete_status,
-            'deleted_date' => $fuel->deleted_date ? $fuel->deleted_date->format('d m Y h:i:s A') : null,
-            'deletedBy' => $fuel->deletedBy ? $fuel->user->fullname_kh . ' - '. $fuel->user->fullname_en : null,
+
+            'deleted_date_data' => $fuel->deleted_date ? \Carbon\Carbon::parse($fuel->deleted_date)->format('d m Y h:i:s A') : __("N/A"),
+            'deletedBy' => $fuel->deleted_by ? $fuel->user->fullname_kh . ' - ' . $fuel->user->fullname_en : __("N/A"),
         ]);
     }
 
@@ -176,8 +174,11 @@ class FuelsController extends Controller
 
     public function pdf()
     {
-        $data['suppliers'] = Supplier::with('user')->where('delete_status', 1)->orderBy('id', 'desc')->get();
-        $html = view('backend.pdf.supplier', $data)->render();
+        $data['fuels'] = Fuel::with(['fuelType', 'supplier', 'user'])
+            ->where('delete_status', 1) // Only include active fuels
+            ->orderBy('id', 'desc')
+            ->get();
+        $html = view('backend.pdf.fuelInventory', $data)->render();
         PdfKh::loadHtml($html)->addMPdfConfig([
             'mode' => 'utf-8',
             'format' => 'A4-P',
@@ -187,13 +188,13 @@ class FuelsController extends Controller
             'default_font' => 'khmeros',
             'default_font_size' => 11,
             'default_font_family' => 'khmeros',
-        ])->download('suppliers-' . now()->format('d-m-Y__H:i:s') . '.pdf');
+        ])->download('fuel-inventory-' . now()->format('d-m-Y__H:i:s') . '.pdf');
     }
 
     public function exportExcel()
     {
         // return Excel::download(new FuelTypePriceExport, 'invoices.xlsx');
-        $filename = 'suppliers-' . now()->format('d-m-Y__H-i-s') . '.xlsx';
-        return Excel::download(new SupplierExport, $filename);
+        $filename = 'fuel-inventory-' . now()->format('d-m-Y__H-i-s') . '.xlsx';
+        return Excel::download(new FuelInventoryExport, $filename);
     }
 }

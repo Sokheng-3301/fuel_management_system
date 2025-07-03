@@ -28,9 +28,10 @@
                             <div class="ui buttons tiny">
                                 <button class="ui button" id="printButton"><i
                                         class="bi bi-printer icon"></i>{{ __('Print') }}</button>
-                                <button class="ui button"><i class="bi bi-file-pdf icon"></i>{{ __('PDF') }}</button>
-                                <button class="ui button"><i
-                                        class="bi bi-file-earmark-spreadsheet icon"></i>{{ __('Excel') }}</button>
+                                <a href="{{ route('fuel.pdf') }}" class="ui button"><i
+                                        class="bi bi-file-pdf icon"></i>{{ __('PDF') }}</a>
+                                <a href="{{ route('fuel.excel') }}" class="ui button"><i
+                                        class="bi bi-file-earmark-spreadsheet icon"></i>{{ __('Excel') }}</a>
                             </div>
                         </div>
                     </div>
@@ -50,7 +51,6 @@
                                         <th scope="col" class="text-start">{{ __('Unit Price') }}</th>
                                         <th scope="col" class="text-start">{{ __('Total Price') }}</th>
                                         <th scope="col" colspan="2" class="text-start">{{ __('Date Listed') }}</th>
-                                        {{-- <th scope="col">{{__('Actions')}}</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -60,8 +60,26 @@
                                                 class="text-center {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
                                                 {{ $key + 1 }}</th>
                                             <td
-                                                class="text-uppercase {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
-                                                {{ $item->fuel_code }}</td>
+                                                class="text text-uppercase {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
+                                                <p>
+                                                    {{ $item->fuel_code }}
+                                                </p>
+                                                <p>
+                                                    @if ($item->qty == 0)
+                                                        <span class="text-muted ui small red label"><i
+                                                                class="bi bi-thermometer icon"></i>{{ __('Out of Stock') }}</span>
+                                                    @elseif($item->qty > 10 && $item->qty <= 50)
+                                                        <span class="text-warning ui small teal label"><i
+                                                                class="bi bi-thermometer-half icon"></i>{{ __('Medium Stock') }}</span>
+                                                    @elseif($item->qty > 50)
+                                                        <span class="text-success ui small blue label"><i
+                                                                class="bi bi-thermometer-high icon"></i>{{ __('High Stock') }}</span>
+                                                    @else
+                                                        <span class="text-danger ui small yellow label"><i
+                                                                class="bi bi-thermometer-low icon"></i>{{ __('Low Stock') }}</span>
+                                                    @endif
+                                                </p>
+                                            </td>
                                             <td class="text {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
                                                 <p>{{ $item->fuelType->fuel_type_kh }}</p>
                                                 <p class="text-capitalize">{{ $item->fuelType->fuel_type_en }}</p>
@@ -71,9 +89,12 @@
                                                 <p>{{ $item->supplier->fullname_kh }}</p>
                                                 <p class="text-capitalize">{{ $item->supplier->fullname_en }}</p>
                                             </td>
-                                            <td class="{{ $item->delete_status == 0 ? 'text-danger' : '' }}">
-                                                {{ $item->qty ?? '0.00' }}<span
-                                                    class="ps-2 {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}">{{ __('L') }}</span>
+                                            <td class="text {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
+                                                <p>
+                                                    {{ $item->qty ?? '0.00' }}<span
+                                                        class="ps-2 {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}">{{ __('L') }}</span>
+                                                </p>
+
                                             </td>
                                             <td class="text-start {{ $item->delete_status == 0 ? 'text-danger' : '' }}"><i
                                                     class="bi bi-currency-dollar icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}"></i>{{ $item->unit_price ?? '0.00' }}
@@ -134,47 +155,47 @@
                     <div class="row">
                         <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Fuel Code') }}</div>
                         <div class="col-1">:</div>
-                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="fuelCode"></div>
+                        <div class="col-7 col-sm-8 col-md-7 col-lg-7" id="fuelCode"></div>
                     </div>
                     <div class="row mt-2">
                         <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Fuel Type') }}</div>
                         <div class="col-1">:</div>
-                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="fuelType"></div>
+                        <div class="col-7 col-sm-8 col-md-7 col-lg-7 text-capitalize" id="fuelTypeData"></div>
                     </div>
                     <div class="row mt-2">
                         <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Supplier') }}</div>
                         <div class="col-1">:</div>
-                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="supplier"></div>
+                        <div class="col-7 col-sm-8 col-md-7 col-lg-7 text-capitalize" id="supplier"></div>
                     </div>
 
                     <div class="row mt-2">
                         <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Quantity') }}</div>
                         <div class="col-1">:</div>
-                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="qty"></div>
+                        <div class="col-7 col-sm-8 col-md-7 col-lg-7" id="qty"></div>
                     </div>
 
                     <div class="row mt-2">
                         <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Unit Price') }}</div>
                         <div class="col-1">:</div>
-                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="unitPrice"></div>
+                        <div class="col-7 col-sm-8 col-md-7 col-lg-7" id="unitPrice"></div>
                     </div>
 
                     <div class="row mt-2">
                         <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Total Price') }}</div>
                         <div class="col-1">:</div>
-                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="totalPrice"></div>
+                        <div class="col-7 col-sm-8 col-md-7 col-lg-7" id="totalPrice"></div>
                     </div>
 
                     <div class="row mt-2">
                         <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Date Listed') }}</div>
                         <div class="col-1">:</div>
-                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="dateListed"></div>
+                        <div class="col-7 col-sm-8 col-md-7 col-lg-7" id="dateListed"></div>
                     </div>
 
                     <div class="row mt-2">
                         <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Listed By') }}</div>
                         <div class="col-1">:</div>
-                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="listedBy"></div>
+                        <div class="col-7 col-sm-8 col-md-7 col-lg-7 text-capitalize" id="listedBy"></div>
                     </div>
 
                     <div class="row">
@@ -186,13 +207,13 @@
                     <div class="row mt-2">
                         <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Deleted Date') }}</div>
                         <div class="col-1">:</div>
-                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="deleteDate"></div>
+                        <div class="col-7 col-sm-8 col-md-7 col-lg-7" id="deleteDateData"></div>
                     </div>
 
                     <div class="row mt-2">
                         <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Deleted By') }}</div>
                         <div class="col-1">:</div>
-                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="deleteBy"></div>
+                        <div class="col-7 col-sm-8 col-md-7 col-lg-7" id="deleteBy"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -343,31 +364,25 @@
                 $('#aboutModal').modal('show');
                 let id = $(this).data('id');
                 var url = "{{ route('fuel.show', ':id') }}".replace(':id', id);
+
                 $.ajax({
                     type: "GET",
                     url: url,
                     dataType: "json",
                     success: function(response) {
-                        if (response.status) {
-                            $('#fuelCode').text(response.fuelCode);
-                            $('#fuelType').text(response.fuelType);
-                            $('#supplier').text(response.supplier); // Correctly set supplier
-                            $('#qty').text(response.qty);
-                            $('#unitPrice').html('<i class="bi bi-currency-dollar icon"></i>' +
-                                response.unitPrice);
-                            $('#totalPrice').html('<i class="bi bi-currency-dollar icon"></i>' +
-                                response.totalPrice);
-                            $('#dateListed').text(response.createdAt);
-                            $('#listedBy').text(response.createdBy);
-                            // Handle delete status
-                            // $('#deleteDate').text(response.deleted_date);
-                            // $('#deleteBy').text(response.deletedBy);
-                        } else {
-                            alert(response.message); // Handle case where fuel not found
-                        }
-                    },
-                    error: function() {
-                        alert('An error occurred while fetching fuel details.');
+                        $('#fuelCode').text(response.fuelCode ?? '');
+                        $('#fuelTypeData').text(response.fuelTypeData ?? '');
+                        $('#supplier').text(response.supplier ?? '');
+                        $('#qty').text(response.qty ?? '0');
+                        $('#unitPrice').html('<i class="bi bi-currency-dollar icon"></i>' +
+                            (response.unitPrice ?? ''));
+                        $('#totalPrice').html('<i class="bi bi-currency-dollar icon"></i>' +
+                            (response.totalPrice ?? ''));
+                        $('#dateListed').text(response.createdAt ?? '');
+                        $('#listedBy').text(response.createdBy ?? '');
+
+                        $('#deleteDateData').text(response.deleted_date_data);
+                        $('#deleteBy').text(response.deletedBy);
                     }
                 });
             });

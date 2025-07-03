@@ -46,7 +46,7 @@ class SupplierController extends Controller
         // $data['supplier']
         // Create a new supplier instance
         $supplier = Supplier::create([
-            'supplier_code' => 'SUP-' . time(), // Generate a unique supplier code
+            'supplier_code' => 'SUP-' . time() .'-' . rand(100, 9999), // Generate a unique supplier code
             'fullname_kh' => $request->input('fullname_kh'),
             'fullname_en' => $request->input('fullname_en'),
             'email' => $request->input('email'),

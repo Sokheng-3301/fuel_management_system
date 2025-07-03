@@ -1,10 +1,12 @@
 <?php
 
+use App\Models\Customer;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FuelsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SetlangController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\FuelTypeandPriceController;
 
@@ -46,18 +48,29 @@ Route::middleware(['lang', 'auth', 'active.menu'])->group(function () {
         return view('welcome');
     })->name('home');
 
+    // Fuel Inventory Route
     Route::resource('fuel', FuelsController::class);
+    Route::get('fuel/inventory/export/pdf', [FuelsController::class, 'pdf'])->name('fuel.pdf');
+    Route::get('fuel/inventory/export/excel', [FuelsController::class, 'exportExcel'])->name('fuel.excel');
+
+
+
+    // Fuel Type and Price Route
     Route::resource('fuel-type-price', FuelTypeandPriceController::class);
     Route::post('fuel-type-price/hide', [FuelTypeandPriceController::class, 'hide'])->name('fuel-type-price.hide');
     Route::get('fuel/export/pdf', [FuelTypeandPriceController::class, 'pdf'])->name('fuel-type-price.pdf');
     Route::get('fuel/export/excel', [FuelTypeandPriceController::class, 'exportExcel'])->name('fuel-type-price.excel');
-    // Route::get('fuel.asp', [FuelsController::class,'index'])->name('fuel.asp.index');
 
     // Supplier Route
     Route::resource('supplier', SupplierController::class)->names('supplier');
     Route::get('supplier/export/pdf', [SupplierController::class, 'pdf'])->name('supplier.pdf');
     Route::get('supplier/export/excel', [SupplierController::class, 'exportExcel'])->name('supplier.excel');
 
+
+    // Customer Route
+    Route::resource('customer', CustomerController::class)->names('customer');
+    Route::get('customer/export/pdf', [CustomerController::class, 'pdf'])->name('customer.pdf');
+    Route::get('customer/export/excel', [CustomerController::class, 'exportExcel'])->name('customer.excel');
 
 
 });
