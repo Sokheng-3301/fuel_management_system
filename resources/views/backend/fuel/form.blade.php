@@ -10,7 +10,7 @@
             <!-- /.card -->
             <!-- DIRECT CHAT -->
             <div class="card direct-chat direct-chat-primary mb-4">
-                <form action="{{ $update ? route('fuel.update', $item->id) : route('fuel.store') }}" method="POST"
+                <form action="{{ $update ? route('fuel.update', $fuel->id) : route('fuel.store') }}" method="POST"
                     autocomplete="off" class="ui form">
                     @csrf
                     @if ($update)

@@ -249,18 +249,6 @@
                     }
                 });
             });
-
-            $(document).on('click', '#pdfButton', function() {
-                $.ajax({
-                    type: "get",
-                    url: "{{ route('fuel-type-price.pdf') }}",
-                    data: "data",
-                    dataType: "json",
-                    success: function(response) {
-
-                    }
-                });
-            });
         });
     </script>
 @endsection

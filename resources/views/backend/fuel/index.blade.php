@@ -73,11 +73,12 @@
                                             </td>
                                             <td class="{{ $item->delete_status == 0 ? 'text-danger' : '' }}">
                                                 {{ $item->qty ?? '0.00' }}<span
-                                                    class="ps-2 text-muted">{{ __('L') }}</span></td>
+                                                    class="ps-2 {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}">{{ __('L') }}</span>
+                                            </td>
                                             <td class="text-start {{ $item->delete_status == 0 ? 'text-danger' : '' }}"><i
-                                                    class="bi bi-currency-dollar icon text-muted"></i>{{ $item->unit_price ?? '0.00' }}
+                                                    class="bi bi-currency-dollar icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}"></i>{{ $item->unit_price ?? '0.00' }}
                                             <td class="text-start {{ $item->delete_status == 0 ? 'text-danger' : '' }}"><i
-                                                    class="bi bi-currency-dollar icon text-muted"></i>{{ $item->total_price ?? '0.00' }}
+                                                    class="bi bi-currency-dollar icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}"></i>{{ $item->total_price ?? '0.00' }}
                                             </td>
                                             <td
                                                 class="text-start {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}">
@@ -88,7 +89,8 @@
                                                     class="ui scrolling pointing icon button nimi p-1 circular dropdown dropdown{{ $key + 1 }}">
                                                     <i class="bi bi-three-dots-vertical icon"></i>
                                                     <div class="menu left">
-                                                        <div class="item"><i
+                                                        <div class="item" id="aboutModalBtn"
+                                                            data-id="{{ $item->id }}"><i
                                                                 class="bi bi-eye-fill icon"></i>{{ __('About Fuel') }}
                                                         </div>
                                                         <a href="{{ route('fuel.edit', $item->id) }}" class="item"><i
@@ -96,8 +98,9 @@
                                                         </a>
                                                         <div class="item" data-id="{{ $item->id }}"
                                                             id="{{ $item->delete_status == 0 ? 'restoreButton' : 'deleteButton' }}">
-                                                            <i class="bi bi-trash-fill icon"></i>
-                                                            {{ $item->delete_status == 0 ? __('Retore') : __('Move to Trash') }}
+                                                            <i
+                                                                class="bi {{ $item->delete_status == 0 ? 'bi-recycle' : 'bi-trash-fill' }} icon"></i>
+                                                            {{ $item->delete_status == 0 ? __('Restore') : __('Move to Trash') }}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -117,6 +120,88 @@
         </div>
     </div>
     <!-- /.row (main row) -->
+
+    {{-- Modal detail about fuel  --}}
+    <!-- Modal -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">{{ __('About Fuel') }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body px-4">
+                    <div class="row">
+                        <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Fuel Code') }}</div>
+                        <div class="col-1">:</div>
+                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="fuelCode"></div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Fuel Type') }}</div>
+                        <div class="col-1">:</div>
+                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="fuelType"></div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Supplier') }}</div>
+                        <div class="col-1">:</div>
+                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="supplier"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Quantity') }}</div>
+                        <div class="col-1">:</div>
+                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="qty"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Unit Price') }}</div>
+                        <div class="col-1">:</div>
+                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="unitPrice"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Total Price') }}</div>
+                        <div class="col-1">:</div>
+                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="totalPrice"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Date Listed') }}</div>
+                        <div class="col-1">:</div>
+                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="dateListed"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Listed By') }}</div>
+                        <div class="col-1">:</div>
+                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="listedBy"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Deleted Date') }}</div>
+                        <div class="col-1">:</div>
+                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="deleteDate"></div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-4 col-sm-3 col-md-3 col-lg-3">{{ __('Deleted By') }}</div>
+                        <div class="col-1">:</div>
+                        <div class="col-8 col-sm-8 col-md-7 col-lg-7" id="deleteBy"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="ui button small" data-bs-dismiss="modal">{{ __('Close') }}</button>
+                    {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('js')
@@ -131,14 +216,18 @@
 
     <script>
         $(document).ready(function() {
-            $(document).on('click', '#buttonHide', function() {
+            // delete
+            $(document).on('click', '#deleteButton', function() {
                 let id = $(this).data('id');
+                var url = "{{ route('fuel.destroy', ':id') }}".replace(':id', id);
+                let button = $(this); // Store the button reference
+
                 Swal.fire({
-                    title: "{{ __('Hide Fuel') }}",
-                    text: "{{ __('Are you sure you want to hide this fuel?') }}",
+                    title: "{{ __('Move to Trash') }}",
+                    text: "{{ __('Are you sure you want to move to trash?') }}",
                     icon: "question",
-                    iconHtml: "<i class='bi bi-eye-slash-fill icon'></i>",
-                    confirmButtonText: "{{ __('Yes, Hide it') }}",
+                    iconHtml: "<i class='bi bi-trash-fill icon'></i>",
+                    confirmButtonText: "{{ __('Yes, Move it') }}",
                     cancelButtonText: "{{ __('No, Cancel') }}",
                     showCancelButton: true,
                     showCloseButton: true,
@@ -146,42 +235,59 @@
                     cancelButtonColor: '#d33',
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        // Disable the button to prevent double submission
+                        button.prop('disabled', true);
+
+
                         $.ajax({
-                            url: "{{ route('fuel-type-price.hide') }}",
-                            type: 'POST',
+                            url: url,
+                            type: 'DELETE',
                             data: {
                                 _token: '{{ csrf_token() }}',
                                 id: id
                             },
                             success: function(response) {
-
                                 Swal.fire({
-                                    title: response.message,
+                                    title: "{{ __('Success') }}",
+                                    text: response.message,
                                     icon: "success",
                                     draggable: true,
                                     showConfirmButton: false,
                                     timer: 3000
                                 });
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
                             },
                             error: function(xhr) {
-                                console.error(xhr);
+                                Swal.fire({
+                                    title: "{{ __('Error') }}",
+                                    text: xhr.responseJSON.message ||
+                                        "{{ __('Something went wrong!') }}",
+                                    icon: "error",
+                                    confirmButtonText: "{{ __('Okay') }}"
+                                });
+                            },
+                            complete: function() {
+                                // Re-enable the button after the request is complete
+                                button.prop('disabled', false);
                             }
                         });
-                        setTimeout(function() {
-                            location.reload();
-                        }, 1200);
                     }
                 });
             });
 
-            $(document).on('click', '#buttonShow', function() {
+            // restore
+            $(document).on('click', '#restoreButton', function() {
                 let id = $(this).data('id');
+                var url = "{{ route('fuel.destroy', ':id') }}".replace(':id', id);
+
                 Swal.fire({
-                    title: "{{ __('Show Fuel') }}",
-                    text: "{{ __('Are you sure you want to show this fuel?') }}",
+                    title: "{{ __('Restore') }}",
+                    text: "{{ __('Are you sure you want to restore?') }}",
                     icon: "question",
-                    iconHtml: "<i class='bi bi-eye-fill icon'></i>",
-                    confirmButtonText: "{{ __('Yes, Show it') }}",
+                    iconHtml: "<i class='bi bi-arrow-clockwise icon'></i>",
+                    confirmButtonText: "{{ __('Yes, Restore it') }}",
                     cancelButtonText: "{{ __('No, Cancel') }}",
                     showCancelButton: true,
                     showCloseButton: true,
@@ -189,42 +295,79 @@
                     cancelButtonColor: '#d33',
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        // Disable the button to prevent double submission
+                        $(this).prop('disabled', true);
+
                         $.ajax({
-                            url: "{{ route('fuel-type-price.hide') }}",
-                            type: 'POST',
+                            url: url,
+                            type: 'DELETE',
                             data: {
                                 _token: '{{ csrf_token() }}',
                                 id: id
                             },
                             success: function(response) {
-
                                 Swal.fire({
-                                    title: response.message,
+                                    title: "{{ __('Success') }}",
+                                    text: response.message,
                                     icon: "success",
                                     draggable: true,
                                     showConfirmButton: false,
                                     timer: 3000
                                 });
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
                             },
                             error: function(xhr) {
-                                console.error(xhr);
+                                Swal.fire({
+                                    title: "{{ __('Error') }}",
+                                    text: xhr.responseJSON.message ||
+                                        "{{ __('Something went wrong!') }}",
+                                    icon: "error",
+                                    confirmButtonText: "{{ __('Okay') }}"
+                                });
+                            },
+                            complete: function() {
+                                // Re-enable the button after the request is complete
+                                $(this).prop('disabled', false);
                             }
                         });
-                        setTimeout(function() {
-                            location.reload();
-                        }, 1200);
                     }
                 });
             });
 
-            $(document).on('click', '#pdfButton', function() {
+            // about detail
+            // $('#aboutModal').modal('show');
+
+            $(document).on('click', '#aboutModalBtn', function() {
+                $('#aboutModal').modal('show');
+                let id = $(this).data('id');
+                var url = "{{ route('fuel.show', ':id') }}".replace(':id', id);
                 $.ajax({
-                    type: "get",
-                    url: "{{ route('fuel-type-price.pdf') }}",
-                    data: "data",
+                    type: "GET",
+                    url: url,
                     dataType: "json",
                     success: function(response) {
-
+                        if (response.status) {
+                            $('#fuelCode').text(response.fuelCode);
+                            $('#fuelType').text(response.fuelType);
+                            $('#supplier').text(response.supplier); // Correctly set supplier
+                            $('#qty').text(response.qty);
+                            $('#unitPrice').html('<i class="bi bi-currency-dollar icon"></i>' +
+                                response.unitPrice);
+                            $('#totalPrice').html('<i class="bi bi-currency-dollar icon"></i>' +
+                                response.totalPrice);
+                            $('#dateListed').text(response.createdAt);
+                            $('#listedBy').text(response.createdBy);
+                            // Handle delete status
+                            // $('#deleteDate').text(response.deleted_date);
+                            // $('#deleteBy').text(response.deletedBy);
+                        } else {
+                            alert(response.message); // Handle case where fuel not found
+                        }
+                    },
+                    error: function() {
+                        alert('An error occurred while fetching fuel details.');
                     }
                 });
             });

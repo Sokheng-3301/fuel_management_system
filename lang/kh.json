@@ -149,5 +149,15 @@
     "Total Price are not empty" : "តម្លៃសរុបមិនអាចទទេនោះទេ",
     "Add fuel instock successfully" : "បន្ថែមប្រេងឥន្ធនៈក្នុងស្តុកបានជោគជ័យ",
     "Add fuel instock failed" : "បន្ថែមប្រេងឥន្ធនៈក្នុងស្តុកបានបរាជ័យ",
-    "Date Listed" : "កាលបរិច្ឆេទចុះបញ្ជី"
+    "Date Listed" : "កាលបរិច្ឆេទចុះបញ្ជី",
+    "Fuel moved to trash successfully." : "ផ្លាស់ទីប្រេងឥន្ធនៈទៅធុងសំរាមបានជោគជ័យ",
+    "Fuel restored successfully." : "ស្ដារប្រេងឥន្ធនៈបានជោគជ័យ",
+    "Fuel not found." : "មិនមានប្រេងឥន្ធនៈទេ",
+    "Update Fuel Inventory" : "ធ្វើបច្ចុប្បន្នភាពស្តុកឥន្ធនៈ",
+    "Back" : "ត្រឡប់ក្រោយ",
+    "Fuel updated successfully" : "ធ្វើបច្ចុប្បន្នភាពប្រេងឥន្ធនៈបានជោគជ័យ",
+    "Fuel update failed" : "ធ្វើបច្ចុប្បន្នភាពប្រេងឥន្ធនៈបានបរាជ័យ",
+    "Listed By" : "ចុះបញ្ជីដោយ",
+    "Deleted Date" : "កាលបរិច្ឆេទលុប",
+    "Deleted By" : "លុបដោយ"
 }
