@@ -69,13 +69,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{{ route('sale.create') }}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>{{__("Add new")}}</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{{ route('sale.index') }}" class="nav-link">
                                 <i class="nav-icon bi bi-circle"></i>
                                 <p>{{__('Manage')}}</p>
                             </a>

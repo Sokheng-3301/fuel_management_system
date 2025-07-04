@@ -55,12 +55,18 @@
 <link rel="stylesheet" href="{{ asset('dist/css/dataTables.bootstrap5.min.css') }}">
 
 <link rel="stylesheet" href="{{ asset('dist/css/jquery-ui.css') }}">
-
 <link rel="stylesheet" href="{{ asset('dist/time-select/mdtimepicker.min.css') }}">
+
 {{-- <link rel="stylesheet" href="{{ asset('dist/css/autoFill.bootstrap4.min.css') }}"> --}}
 <link rel="stylesheet" href="{{ asset('dist/css/semantic.min.css') }}">
 
 {{-- bootstrap select --}}
 <link rel="stylesheet" href="{{ asset('dist/bootstrap-select/css/bootstrap-select.min.css') }}">
 
+{{-- year picker  --}}
+<link rel="stylesheet" href="{{ asset('dist/year-picker/yearpicker.css') }}">
+<link rel="stylesheet" href="{{ asset('dist/year-picker/datepicker.css') }}">
+
+{{-- custom my css  --}}
 <link rel="stylesheet" href="{{ asset('dist/css/my.css.css') }}">
+

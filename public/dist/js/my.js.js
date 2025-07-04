@@ -33,9 +33,11 @@ $(document).ready(function () {
         $('#birth_date' + i).datepicker();
 
 
-
     }
+
     $("#dated").datepicker();
+    $('.startDate').datepicker();
+    $('.endDate').datepicker();
 
     window.addEventListener('load', function () {
         $('.bg-table-loader').hide(1000);
@@ -44,6 +46,8 @@ $(document).ready(function () {
     for (var i = 1; i <= 50; i++) {
         $('.select_search' + i).selectpicker();
     }
+
+
 });
 // $( "#datepicker7" ).datepicker();
 // $( "#datepicker8" ).datepicker();
@@ -75,6 +79,8 @@ $('#printButton').on('click', function () {
 // $(document).ready(function () {
 //     $('form select, form input').attr('disabled', true).css('cursor', 'not-allowed');
 // });
+
+
 
 
 

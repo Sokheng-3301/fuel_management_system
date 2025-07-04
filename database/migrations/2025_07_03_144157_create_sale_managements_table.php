@@ -22,12 +22,16 @@ return new class extends Migration
             $table->float('total_price')->nullable();
             $table->date('sale_date')->nullable();
             $table->string('note')->nullable();
-            $table->string('created_by')->nullable();
+            $table->string('payment_method')->nullable()->comment('1:cash, 2:credit, 3:Mobile pay, 4:bank transfer');
+            $table->string('employee_id')->nullable();
+            $table->float('discount')->default(0)->comment('Discount amount');
+            $table->string('tax')->default(0)->comment('Tax amount');
+
             $table->string('updated_by')->nullable();
             $table->string('delete_status')->default(1)->comment('1:active, 0:deleted'); // 1 = active,
             $table->string('delete_by')->nullable();
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete timestamp');
-            $table->integer('status')->default(2)->comment('2 for completed, 1 for pending, 0 for cancelled');
+            $table->integer('status')->default(1)->comment('1 for completed, 0 for pending');
             $table->timestamps();
         });
     }

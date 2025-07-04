@@ -19,11 +19,15 @@ class SaleManagement extends Model
         'total_price',
         'sale_date',
         'note',
-        'created_by',
         'updated_by',
         'delete_status',
         'delete_by',
-        'status'
+        'status',
+        'payment_method',
+        'employee_id',
+        'discount',
+        'tax',
+        'deleted_at',
     ];
 
     public function customer()
@@ -36,6 +40,6 @@ class SaleManagement extends Model
     }
     public function user()
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->belongsTo(User::class, 'employee_id');
     }
 }

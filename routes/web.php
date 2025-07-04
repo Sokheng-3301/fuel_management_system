@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SetlangController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\SaleManagementController;
 use App\Http\Controllers\FuelTypeandPriceController;
 
 /*
@@ -73,6 +74,11 @@ Route::middleware(['lang', 'auth', 'active.menu'])->group(function () {
     Route::get('customer/export/excel', [CustomerController::class, 'exportExcel'])->name('customer.excel');
 
 
+    // Sale management Route
+    Route::resource('sale', SaleManagementController::class)->names('sale');
+    Route::post('sale/completed', [SaleManagementController::class, 'complete'])->name('sale.complete');
+    Route::get('sale/export/pdf', [SaleManagementController::class, 'pdf'])->name('sale.pdf');
+    Route::get('sale/export/excel', [SaleManagementController::class, 'exportExcel'])->name('sale.excel');
 });
 
 
@@ -83,9 +89,9 @@ Route::middleware('auth', 'lang')->group(function () {
 });
 
 
-Route::get('lang/{locale}',[SetlangController::class, 'setlocalization'])->name('lang');
+Route::get('lang/{locale}', [SetlangController::class, 'setlocalization'])->name('lang');
 Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('login/save', [AuthController::class, 'login'])->name('login.save');
 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

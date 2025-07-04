@@ -239,7 +239,10 @@
 {{-- bootstrap select --}}
 <script src="{{ asset('dist/bootstrap-select/js/bootstrap-select.min.js') }}"></script>
 
+{{-- year picker --}}
+<script src="{{ asset('dist/year-picker/yearpicker.js') }}"></script>
+{{-- <script src="{{ asset('dist/year-picker/datepicker.all.min.js') }}"></script> --}}
+<script src="{{ asset('dist/year-picker/monthpicker.js') }}"></script>
+<script src="{{ asset('dist/year-picker/moment.min.js') }}"></script>
 
 <script src="{{ asset('dist/js/my.js.js') }}"></script>
-{{-- <script src="{{ asset('dist/js/dataTables.autoFill.min.js') }}"></script>
-<script src="{{ asset('dist/js/autoFill.bootstrap4.min.js') }}"></script> --}}
