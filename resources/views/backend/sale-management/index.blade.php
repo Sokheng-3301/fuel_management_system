@@ -270,15 +270,16 @@
                                                     class="ui scrolling pointing icon button nimi p-1 circular dropdown dropdown{{ $index + 1 }}">
                                                     <i class="bi bi-three-dots-vertical icon"></i>
                                                     <div class="menu left">
-                                                        <a href="" class="item">
+                                                        <a href="{{ route('sale.show', $item->id) }}" class="item">
                                                             <i class="bi bi-eye-fill icon"></i> {{ __('About Sale') }}
                                                         </a>
 
-                                                        <a href="" class="item">
-                                                            <i class="bi bi-printer-fill icon"></i> {{ __('Invoice') }}
+                                                        <a type="button" data-id="{{ $item->id }}" class="item"
+                                                            id="invoiceButtonDetail">
+                                                            <i class="bi bi-receipt icon"></i> {{ __('Invoice') }}
                                                         </a>
 
-                                                        <a href="{{ route('customer.edit', $item->id) }}" class="item">
+                                                        <a href="{{ route('sale.edit', $item->id) }}" class="item">
                                                             <i class="bi bi-pencil-square icon"></i> {{ __('Update') }}
                                                         </a>
                                                         <div class="item" data-id="{{ $item->id }}"
@@ -303,6 +304,93 @@
         </div>
     </div>
     <!-- /.row (main row) -->
+
+    <!-- Modal Invoice -->
+    <div class="modal fade" id="invoiceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">{{ __('Invoice') }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body px-3">
+                    <div class="row">
+                        <div class="col-md-12" id="invoice">
+                            <div class="row">
+                                <div class="col-6">
+                                    <img src="{{ asset('dist/assets/img/logo.png') }}" alt="FMS-Logo" class="ui image"
+                                        width="100px">
+                                    {{-- <small>{{config('app.name')}}</small> --}}
+                                </div>
+                                <div class="col-6 text-end normal-text">
+                                    <h5 class="text-end ui header medium text-uppercase">{{ __('Invoice') }}</h5>
+                                    <p>No : <span id="sale_code"></span></p>
+                                    <p>{{ __('Date') }} : <span id="sale_date"></span></p>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-12">[ {{ __('Customer Code') }} : # <span id="customer_code"></span> ]
+                                </div>
+                                <div class="col-12 mt-1">[ {{ __('Customer Name') }} : <span id="fullname_kh"></span>
+                                    - <span class="text-uppercase" id="fullname_en"></span> ]</div>
+                                <div class="col-12 mt-1"><i class="bi bi-car-front icon"></i>#<span
+                                        id="vichle_number"></span>
+                                </div>
+                                <div class="col-12 mt-1"><i class="bi bi-telephone icon"></i>(+855) <span
+                                        id="phone"></span></div>
+                                <div class="col-12 mt-1"><i class="bi bi-envelope-at icon"></i> <span
+                                        id="email"></span> </div>
+                                <div class="col-12 mt-1"><i class="bi bi-geo-alt icon"></i><span id="address"></span>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <table class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                {{-- <th>{{__("No.")}}</th> --}}
+                                                <th>{{ __('Description') }}</th>
+                                                <th>{{ __('Quantity') }}</th>
+                                                <th>{{ __('Unit Price') }}</th>
+                                                <th>{{ __('Discount') }}</th>
+                                                <th>{{ __('Amount') }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                {{-- <th>1</th> --}}
+                                                <td id="noted"></td>
+                                                <td><span id="quantity"></span> {{ __('L') }}</td>
+                                                <td><span id="unit_price"></span> $</td>
+                                                <td><span id="discount"></span> %</td>
+                                                <td><span id="total_price"></span> $</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" class="text-end">{{ __('Total') }}</td>
+                                                <th><span id="total_price_all"></span> $</th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <p class="text-center">{{ __('Thank you for being so supportive of our service.') }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="ui button tiny red" data-bs-dismiss="modal">{{ __('Close') }}</button>
+                    <button class="ui blue tiny button" id="printInvoiceBtn"><i
+                            class="bi bi-printer-fill icon"></i>{{ __('Print') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('js')
@@ -327,6 +415,8 @@
     </script>
     <script>
         $(document).ready(function() {
+            $("#yearly").yearpicker();
+
             $(document).on('click', '#buttonHide', function() {
                 let id = $(this).data('id');
                 var url = "{{ route('customer.destroy', ':id') }}".replace(':id', id);
@@ -508,8 +598,82 @@
             });
 
 
-            $("#yearly").yearpicker();
+            // $('#invoiceModal').modal('show');
 
+            $(document).on('click', '#invoiceButtonDetail', function() {
+                var id = $(this).data('id');
+                var url = "{{ route('sale.invoice', ':id') }}".replace(':id', id);
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: 'json',
+                    success: function(response) {
+                        $('#invoiceModal').modal('show');
+                        $('#sale_code').text(response.data.sale_code);
+                        $('#sale_date').text(moment(response.data.sale_date).format('DD-MM-YYYY'));
+                        $('#customer_code').text(response.data.customer.customer_code);
+                        $('#fullname_kh').text(response.data.customer.fullname_kh);
+                        $('#fullname_en').text(response.data.customer.fullname_en);
+                        $('#vichle_number').text(response.data.vichle_number);
+                        $('#phone').text(response.data.customer.phone);
+                        $('#email').text(response.data.customer.email);
+                        $('#address').text(response.data.customer.address);
+
+
+
+                        $('#noted').text(response.data.note);
+                        $('#quantity').text(response.data.quantity);
+                        $('#unit_price').text(response.data.unit_price);
+                        $('#discount').text(response.data.discount);
+                        $('#total_price').text(response.data.total_price);
+                        $('#total_price_all').text(response.data.total_price);
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            title: "{{ __('Error') }}",
+                            text: xhr.responseJSON.message ||
+                                "{{ __('Something went wrong!') }}",
+                            icon: "error",
+                            confirmButtonText: "{{ __('Okay') }}"
+                        });
+                    },
+
+                });
+            });
+
+             $(document).on('click', '#printInvoiceBtn', function() {
+            var content = $('#invoice').html();
+            var myWindow = window.open('', '', 'width=800,height=500');
+            myWindow.document.write(`
+            <html><head>
+                <title>Print Invoice</title>
+                <link rel="stylesheet" href="{{ asset('dist/css/adminlte.css') }}" />
+                <style>
+                    @font-face {
+                        font-family: 'Akbaltom Nagar';
+                        src: url('/fonts/AKbalthom-Naga.ttf') format('truetype');
+                        font-weight: normal;
+                    }
+                    @font-face {
+                        font-family: 'Poppins';
+                        src: url('/fonts/Poppins-Regular.ttf') format('truetype');
+                        font-weight: normal;
+                    }
+                    * {
+                        font-family: 'Poppins', 'Lato', 'Helvetica Neue', 'Akbaltom Nagar', sans-serif !important;
+                    }
+                    body{
+                        margin: 15px !important;
+                    }
+                </style>
+            `);
+            myWindow.document.write('</head><body>');
+            myWindow.document.write(content);
+            myWindow.document.write('</body></html>');
+            myWindow.document.close();
+            myWindow.print();
+        });
         });
     </script>
 @endsection

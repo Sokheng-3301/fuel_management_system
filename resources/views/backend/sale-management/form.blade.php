@@ -28,7 +28,7 @@
                                 <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
                             </button>
                             @if ($update || session('success') || session('error'))
-                                <a href="{{ route('sale.index') }}"
+                                <a href="{{ route('sale.index', @$queryString) }}"
                                     class="ui button small">{{ __('Sale Management List') }}</a>
                             @else
                                 <button type="reset" class="ui button small">{{ __('Reset') }}</button>
@@ -44,8 +44,9 @@
                         <div class="row">
                             <div class="col-md-6 field">
                                 <div class="field">
+                                    <input type="hidden" name="query_string" value="{{ $update ? $queryString : '' }}"
+                                        class="d-none">
                                     <label for="customer">{{ __('Customer') }} <span class="text-danger">*</span></label>
-
                                     <select name="customer_id" class="ui search dropdown" id="customer">
                                         <option value="">{{ __('Select Customer') }}</option>
                                         @foreach ($customers as $customer)
@@ -197,12 +198,18 @@
                                             </option>
                                         @endforeach --}}
 
-
-
-                                        <option value="1"><i class="bi bi-cash-coin icon"></i>{{__('Cash')}}</option>
-                                        <option value="2"><i class="bi bi-credit-card icon"></i>{{__('Credit/Debit Cards')}}</option>
-                                        <option value="3"><i class="bi bi-phone icon"></i>{{__('Mobile Payments')}}</option>
-                                        <option value="4"><i class="bi bi-bank icon"></i>{{__('Bank Transfers')}}</option>
+                                        <option value="1"
+                                            {{ $update && $item->payment_method == 1 ? 'selected' : '' }}><i
+                                                class="bi bi-cash-coin icon"></i>{{ __('Cash') }}</option>
+                                        <option value="2"
+                                            {{ $update && $item->payment_method == 2 ? 'selected' : '' }}><i
+                                                class="bi bi-credit-card icon"></i>{{ __('Credit/Debit Cards') }}</option>
+                                        <option value="3"
+                                            {{ $update && $item->payment_method == 3 ? 'selected' : '' }}><i
+                                                class="bi bi-phone icon"></i>{{ __('Mobile Payments') }}</option>
+                                        <option value="4"
+                                            {{ $update && $item->payment_method == 4 ? 'selected' : '' }}><i
+                                                class="bi bi-bank icon"></i>{{ __('Bank Transfers') }}</option>
 
 
                                     </select>
@@ -212,11 +219,12 @@
                                 </div>
 
                                 <div class="grouped fields">
-                                    <label>{{__('Status')}} <small class="fw-normal text-muted ps-2">{{__('Checking -> Completed, Uncheck -> Pendding')}}</small></label>
+                                    <label>{{ __('Status') }} <small
+                                            class="fw-normal text-muted ps-2">{{ __('Checking->Completed, Uncheck->Pendding') }}</small></label>
                                     <div class="field">
                                         <div class="ui toggle checkbox">
-                                            <input type="checkbox" name="status" checked="checked" id="completed"
-                                                value="1" {{ $update && $item->status == 1 ? 'checked' : '' }}>
+                                            <input type="checkbox" name="status" id="completed" value="1"
+                                                @if ($update) {{ $item->status == 1 ? 'checked' : '' }} @else checked @endif>
                                             <label for="completed">{{ __('Completed') }}</label>
                                         </div>
                                     </div>

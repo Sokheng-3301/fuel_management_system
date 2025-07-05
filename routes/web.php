@@ -79,6 +79,7 @@ Route::middleware(['lang', 'auth', 'active.menu'])->group(function () {
     Route::post('sale/completed', [SaleManagementController::class, 'complete'])->name('sale.complete');
     Route::get('sale/export/pdf', [SaleManagementController::class, 'pdf'])->name('sale.pdf');
     Route::get('sale/export/excel', [SaleManagementController::class, 'exportExcel'])->name('sale.excel');
+    Route::get('sale/{id}/invoice', [SaleManagementController::class, 'invoice'])->name('sale.invoice');
 });
 
 
