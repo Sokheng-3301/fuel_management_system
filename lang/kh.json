@@ -241,5 +241,10 @@
     "Thank you for being so supportive of our service." : "សូមអរគុណចំពោះការគាំទ្រសេវាកម្មយើងខ្ញុំ។",
     "Male" : "ប្រុស",
     "Female" : "ស្រី",
-    "Description" : "អធិប្បាយ"
+    "Description" : "អធិប្បាយ",
+    "Moved sale management to trash successfully." : "ផ្លាស់ទីរបាយការណ៍លក់ទៅធុងសម្រាមបានជោគជ័យ",
+    "Restored sale management successfully." : "ស្តាររបាយការណ៍លក់បានជោគជ័យ",
+    "Sale management not found." : "ស្តាររបាយការណ៍លក់មិនមាន",
+    "Checking->Completed, Uncheck->Pendding" : "ពិនិត្យ​ = បានបញ្ចប់, មិនពិនិត្យ = កំពុងរង់ចាំ",
+    "Please select Payment Method" : "សូមជ្រើសរើសវិធីសាស្ត្របង់ប្រាក់"
 }

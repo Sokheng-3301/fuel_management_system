@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SaleManagementExport;
 use App\Models\Customer;
 use App\Models\FuelType;
 use Illuminate\Http\Request;
 use App\Models\SaleManagement;
 use Illuminate\Support\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use KhmerPdf\LaravelKhPdf\Facades\PdfKh;
 
 class SaleManagementController extends Controller
 {
@@ -207,7 +210,29 @@ class SaleManagementController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $Sale = SaleManagement::find($id);
+
+        if ($Sale) {
+            // Check if the Sale is currently marked as deleted
+            if ($Sale->delete_status == 1) {
+                // Mark the Sale as deleted
+                $Sale->update([
+                    'delete_status' => 0, // Set delete status to 0 (deleted)
+                    'deleted_by' => auth()->user()->id, // Assuming the user is authenticated
+                    'deleted_at' => now(), // Set the deleted date to now
+                ]);
+                return response()->json(['message' => __('Moved sale management to trash successfully.')]);
+            } else {
+                // Restore the Sale
+                $Sale->update([
+                    'delete_status' => 1 // Set delete status to 1 (restored)
+                ]);
+                return response()->json(['message' => __('Restored sale management successfully.')]);
+            }
+        } else {
+            // If the Sale does not exist, return an error message
+            return response()->json(['error' => __('Sale management not found.')], 404);
+        }
     }
 
     // make as completed
@@ -243,5 +268,67 @@ class SaleManagementController extends Controller
             'status' => true,
             'data' => $item,
         ]);
+    }
+
+
+    public function pdf(Request $request)
+    {
+        // $data['customers'] = Customer::with('user')->orderBy('id', 'desc')->get();
+        $query = SaleManagement::with(['customer', 'fuelType', 'user'])
+            ->where('delete_status', 1)
+            ->orderBy('id', 'desc');
+        $data['isSearch'] = false;
+        if (!empty($request->query())) {
+            $data['isSearch'] = true;
+            $year = $request->query('year');
+            $start_date =  '';
+            $end_date =  '';
+            if ($request->query('start-date') != '') {
+                $start_date = Carbon::parse($request->query('start-date'))->format('Y-m-d');
+            }
+
+            if ($request->query('end-date') != '') {
+                $end_date = Carbon::parse($request->query('end-date'))->format('Y-m-d');
+            }
+
+
+            if ($year == '' && $start_date == '' && $end_date == '') {
+                $data['sales'] = $query->get();
+            } elseif ($year != '') {
+                // Year only
+                $data['sales'] = $query->whereYear('sale_date', $year)->get();
+            } elseif ($start_date != '' && empty($year) && empty($end_date)) {
+                // Start date only
+                $data['sales'] = $query->whereBetween('sale_date', [$start_date, now()->format('Y-m-d')])->get();
+            } elseif ($start_date != '' && $end_date != '') {
+                // Between date
+                $data['sales'] = $query->whereBetween('sale_date', [$start_date, $end_date])->get();
+            } else {
+                // all
+                $data['sales'] = $query->whereDate('created_at', today())->get();
+            }
+        } else {
+            // all
+            $data['sales'] = $query->whereDate('created_at', today())->get();
+        }
+
+        $html = view('backend.pdf.saleManagement', $data)->render();
+        PdfKh::loadHtml($html)->addMPdfConfig([
+            'mode' => 'utf-8',
+            'format' => 'A4-P',
+            'margin_top' => 10,
+            'margin_bottom' => 10,
+            'font_size' => 9,
+            'default_font' => 'khmeros',
+            'default_font_size' => 9,
+            'default_font_family' => 'khmeros',
+        ])->download('sale-managements-' . now()->format('d-m-Y__H:i:s') . '.pdf');
+    }
+
+
+    public function exportExcel(Request $request)
+    {
+        $filename = 'sale-managements-' . now()->format('d-m-Y__H-i-s') . '.xlsx';
+        return Excel::download(new SaleManagementExport($request), $filename);
     }
 }

@@ -146,7 +146,7 @@ class CustomerController extends Controller
 
     public function pdf()
     {
-         $data['customers'] = Customer::with('user')->orderBy('id', 'desc')->get();
+         $data['customers'] = Customer::with('user')->where('delete_status', 1)->orderBy('id', 'desc')->get();
         $html = view('backend.pdf.customer', $data)->render();
         PdfKh::loadHtml($html)->addMPdfConfig([
             'mode' => 'utf-8',

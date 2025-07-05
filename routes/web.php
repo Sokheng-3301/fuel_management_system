@@ -10,6 +10,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SaleManagementController;
 use App\Http\Controllers\FuelTypeandPriceController;
+use App\Http\Controllers\PumpManagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +81,14 @@ Route::middleware(['lang', 'auth', 'active.menu'])->group(function () {
     Route::get('sale/export/pdf', [SaleManagementController::class, 'pdf'])->name('sale.pdf');
     Route::get('sale/export/excel', [SaleManagementController::class, 'exportExcel'])->name('sale.excel');
     Route::get('sale/{id}/invoice', [SaleManagementController::class, 'invoice'])->name('sale.invoice');
+
+
+    // Sale management Route
+    Route::resource('pump', PumpManagementController::class)->names('pump');
+    Route::post('pump/completed', [PumpManagementController::class, 'complete'])->name('pump.complete');
+    Route::get('pump/export/pdf', [PumpManagementController::class, 'pdf'])->name('pump.pdf');
+    Route::get('pump/export/excel', [PumpManagementController::class, 'exportExcel'])->name('pump.excel');
+    Route::get('pump/{id}/invoice', [PumpManagementController::class, 'invoice'])->name('pump.invoice');
 });
 
 

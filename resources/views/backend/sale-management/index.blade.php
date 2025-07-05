@@ -124,9 +124,9 @@
                             <div class="ui buttons tiny">
                                 <button class="ui button" id="printButton"><i
                                         class="bi bi-printer icon"></i>{{ __('Print') }}</button>
-                                <a href="{{ route('sale.pdf') }}" class="ui button" id="pdfButton"><i
+                                <a href="{{ route('sale.pdf', request()->all()) }}" class="ui button" id="pdfButton"><i
                                         class="bi bi-file-pdf icon"></i>{{ __('PDF') }}</a>
-                                <a href="{{ route('sale.excel') }}" class="ui button" id="excelButton"><i
+                                <a href="{{ route('sale.excel', request()->all()) }}" class="ui button" id="excelButton"><i
                                         class="bi bi-file-earmark-spreadsheet icon"></i>{{ __('Excel') }}</a>
                             </div>
                         </div>
@@ -158,11 +158,11 @@
                                             </th>
 
                                             <td class="text {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
-                                                <p><i class="icon text-muted">#</i> {{ $item->customer->customer_code }}
+                                                <p><i class="icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}">#</i> {{ $item->customer->customer_code }}
                                                 </p>
                                                 <p
                                                     class="text-capitalize {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
-                                                    <i class="bi bi-person icon text-muted"></i>
+                                                    <i class="bi bi-person icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}"></i>
                                                     @if (session()->has('localization') && session('localization') == 'en')
                                                         {{ $item->customer->fullname_en }}
                                                     @else
@@ -172,7 +172,7 @@
                                                 <p
                                                     class="text-capitalize {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
                                                     <i
-                                                        class="bi bi-telephone icon text-muted"></i>{{ $item->customer->phone }}
+                                                        class="bi bi-telephone icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}"></i>{{ $item->customer->phone }}
                                                 </p>
                                             </td>
 
@@ -202,11 +202,11 @@
 
                                             <td class="text {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
                                                 <p>
-                                                    <small class="text-muted">{{ __('Unit') }}</small>
+                                                    <small class="{{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}">{{ __('Unit') }}</small>
                                                     {{ number_format($item->unit_price, 2) . ' ' . __('$') }}
                                                 </p>
                                                 <p>
-                                                    <small class="text-muted">{{ __('Discount') }}</small>
+                                                    <small class="{{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}">{{ __('Discount') }}</small>
                                                     {{ number_format($item->discount, 2) . ' ' . __('%') }}
                                                 </p>
                                                 <p class="text-capitalize fw-bold text-danger">
@@ -218,17 +218,17 @@
                                             <td class="text {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
                                                 <p class="text-capitalize">
                                                     @if ($item->payment_method == '1')
-                                                        <i class="bi bi-cash-coin icon text-muted"></i>
+                                                        <i class="bi bi-cash-coin icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}"></i>
                                                         {{ __('Cash') }}
                                                     @elseif ($item->payment_method == '2')
-                                                        <i class="bi bi-credit-card icon text-muted"></i>
+                                                        <i class="bi bi-credit-card icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}"></i>
                                                         {{ __('Credit/Debit Cards') }}
                                                     @elseif ($item->payment_method == '3')
-                                                        <i class="bi bi-phone icon text-muted"></i>
+                                                        <i class="bi bi-phone icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}"></i>
                                                         {{ __('Mobile Payments') }}
                                                     @else
                                                         ($item->payment_method == 'bank_transfer')
-                                                        <i class="bi bi-bank icon text-muted"></i>
+                                                        <i class="bi bi-bank icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}"></i>
                                                         {{ __('Bank Transfers') }}
                                                     @endif
                                                 </p>
@@ -250,13 +250,13 @@
 
                                             <td class="text {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
                                                 <p class="{{ $item->delete_status == 0 ? 'text-danger' : '' }}">
-                                                    <i class="bi bi-calendar2-week icon text-muted"></i>
+                                                    <i class="bi bi-calendar2-week icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}"></i>
                                                     {{ Carbon\Carbon::parse($item->sale_date)->format('d-m-Y') }}
                                                 </p>
-                                                <p class="text-capitalize"><i class="icon text-muted">#</i>
+                                                <p class="text-capitalize"><i class="icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}">#</i>
                                                     {{ $item->user->id_card ?? 'ID-000001' }}</p>
                                                 <p>
-                                                    <i class="bi bi-person-badge icon text-muted"></i>
+                                                    <i class="bi bi-person-badge icon {{ $item->delete_status == 0 ? 'text-danger' : 'text-muted' }}"></i>
                                                     @if (session('localization') == 'en')
                                                         {{ $item->user->fullname_en }}
                                                     @else
@@ -419,7 +419,7 @@
 
             $(document).on('click', '#buttonHide', function() {
                 let id = $(this).data('id');
-                var url = "{{ route('customer.destroy', ':id') }}".replace(':id', id);
+                var url = "{{ route('sale.destroy', ':id') }}".replace(':id', id);
                 let button = $(this); // Store the button reference
 
                 Swal.fire({
@@ -479,7 +479,7 @@
 
             $(document).on('click', '#buttonShow', function() {
                 let id = $(this).data('id');
-                var url = "{{ route('customer.destroy', ':id') }}".replace(':id', id);
+                var url = "{{ route('sale.destroy', ':id') }}".replace(':id', id);
 
                 Swal.fire({
                     title: "{{ __('Restore') }}",
