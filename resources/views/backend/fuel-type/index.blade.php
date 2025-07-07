@@ -49,7 +49,7 @@
                             <table class="table table-hover" id="myTable">
                                 <thead>
                                     <tr>
-                                        <th scope="col" class="text-start">{{ __('S.R') }}</th>
+                                        <th scope="col" class="text-start">{{ __('No.') }}</th>
                                         <th scope="col">{{ __('Fuel Type') }}</th>
                                         <th scope="col" class="text-start">{{ __('Fuel Price') }}</th>
                                         <th scope="col" class="text-start">{{ __('Editor Name') }}</th>

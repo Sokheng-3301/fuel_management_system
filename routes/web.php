@@ -11,6 +11,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SaleManagementController;
 use App\Http\Controllers\FuelTypeandPriceController;
 use App\Http\Controllers\PumpManagementController;
+use App\Http\Controllers\ShiftController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,12 +84,18 @@ Route::middleware(['lang', 'auth', 'active.menu'])->group(function () {
     Route::get('sale/{id}/invoice', [SaleManagementController::class, 'invoice'])->name('sale.invoice');
 
 
-    // Sale management Route
+    // Pump management Route
     Route::resource('pump', PumpManagementController::class)->names('pump');
-    Route::post('pump/completed', [PumpManagementController::class, 'complete'])->name('pump.complete');
+    // Route::post('pump/completed', [PumpManagementController::class, 'complete'])->name('pump.complete');
     Route::get('pump/export/pdf', [PumpManagementController::class, 'pdf'])->name('pump.pdf');
     Route::get('pump/export/excel', [PumpManagementController::class, 'exportExcel'])->name('pump.excel');
-    Route::get('pump/{id}/invoice', [PumpManagementController::class, 'invoice'])->name('pump.invoice');
+    // Route::get('pump/{id}/invoice', [PumpManagementController::class, 'invoice'])->name('pump.invoice');
+
+    // Shift management Route
+    Route::resource('shift', ShiftController::class)->names('shift');
+    Route::get('shift/export/pdf', [ShiftController::class, 'pdf'])->name('shift.pdf');
+    Route::get('shift/export/excel', [ShiftController::class, 'exportExcel'])->name('shift.excel');
+    // Route::get('shift/{id}/invoice', [ShiftController::class, 'invoice'])->name('shift.invoice');
 });
 
 

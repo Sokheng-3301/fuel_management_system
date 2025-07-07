@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('shifts', function (Blueprint $table) {
+            $table->id();
+            $table->string('shift_name')->nullable();
+            $table->unsignedBigInteger('employee_id')->unique()->nullable();
+            $table->string('start_time')->nullable();
+            $table->string('end_time')->nullable();
+
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
+            $table->string('delete_status')->default(1)->comment('1:active, 0:deleted'); // 1 = active,
+            $table->string('delete_by')->nullable();
+            $table->timestamp('deleted_at')->nullable()->comment('Soft delete timestamp');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('shifts');
+    }
+};

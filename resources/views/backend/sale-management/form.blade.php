@@ -29,7 +29,7 @@
                             </button>
                             @if ($update || session('success') || session('error'))
                                 <a href="{{ route('sale.index', @$queryString) }}"
-                                    class="ui button small">{{ __('Sale Management List') }}</a>
+                                    class="ui button brown small">{{ __('Sale Management List') }}</a>
                             @else
                                 <button type="reset" class="ui button small">{{ __('Reset') }}</button>
                             @endif
@@ -51,7 +51,9 @@
                                         <option value="">{{ __('Select Customer') }}</option>
                                         @foreach ($customers as $customer)
                                             <option value="{{ $customer->id }}"
-                                                {{ $update && $item->customer_id == $customer->id ? 'selected' : '' }}>
+                                                @if ($update) {{ $item->customer_id == $customer->id ? 'selected' : '' }}
+                                                @else
+                                                {{ old('customer_id') == $customer->id ? 'selected' : '' }} @endif>
                                                 <span class="pe-2 text-primary">{{ $customer->customer_code }}</span>
                                                 @if (session()->has('localization') && session('localization') == 'en')
                                                     <span class="text-capitalize">{{ $customer->fullname_en }}</span>
@@ -101,7 +103,8 @@
                                         <option value="">{{ __('Select Fuel Type') }}</option>
                                         @foreach ($fuel_types as $fuel_type)
                                             <option value="{{ $fuel_type->id }}"
-                                                {{ $update && $item->fuel_type_id == $fuel_type->id ? 'selected' : '' }}>
+                                                @if ($update) {{ $item->fuel_type_id == $fuel_type->id ? 'selected' : '' }}
+                                                @else {{ old('fuel_type_id') == $fuel_type->id ? 'selected' : '' }} @endif>
 
                                                 {{ $fuel_type->fuel_type_kh }} -
                                                 <span class="text-capitalize">{{ $fuel_type->fuel_type_en }}</span>
@@ -199,17 +202,28 @@
                                         @endforeach --}}
 
                                         <option value="1"
-                                            {{ $update && $item->payment_method == 1 ? 'selected' : '' }}><i
-                                                class="bi bi-cash-coin icon"></i>{{ __('Cash') }}</option>
+                                            @if ($update) {{ $item->payment_method == 1 ? 'selected' : '' }}
+                                            @else
+                                                {{ old('payment_method') == 1 ? 'selected' : '' }} @endif>
+                                            <i class="bi bi-cash-coin icon"></i>{{ __('Cash') }}
+                                        </option>
                                         <option value="2"
-                                            {{ $update && $item->payment_method == 2 ? 'selected' : '' }}><i
-                                                class="bi bi-credit-card icon"></i>{{ __('Credit/Debit Cards') }}</option>
+                                            @if ($update) {{ $item->payment_method == 2 ? 'selected' : '' }}
+                                            @else
+                                                {{ old('payment_method') == 2 ? 'selected' : '' }} @endif>
+                                            <i class="bi bi-credit-card icon"></i>{{ __('Credit/Debit Cards') }}
+                                        </option>
                                         <option value="3"
-                                            {{ $update && $item->payment_method == 3 ? 'selected' : '' }}><i
-                                                class="bi bi-phone icon"></i>{{ __('Mobile Payments') }}</option>
+                                            @if ($update) {{ $item->payment_method == 3 ? 'selected' : '' }}
+                                            @else
+                                                {{ old('payment_method') == 3 ? 'selected' : '' }} @endif>
+                                            <i class="bi bi-phone icon"></i>{{ __('Mobile Payments') }}
+                                        </option>
                                         <option value="4"
-                                            {{ $update && $item->payment_method == 4 ? 'selected' : '' }}><i
-                                                class="bi bi-bank icon"></i>{{ __('Bank Transfers') }}</option>
+                                            @if ($update) {{ $item->payment_method == 4 ? 'selected' : '' }}
+                                            @else
+                                                {{ old('payment_method') == 4 ? 'selected' : '' }} @endif>
+                                            <i class="bi bi-bank icon"></i>{{ __('Bank Transfers') }}</option>
 
 
                                     </select>
@@ -224,7 +238,7 @@
                                     <div class="field">
                                         <div class="ui toggle checkbox">
                                             <input type="checkbox" name="status" id="completed" value="1"
-                                                @if ($update) {{ $item->status == 1 ? 'checked' : '' }} @else checked @endif>
+                                                @if ($update) {{ $item->status == 1 ? 'checked' : '' }} @elseif (old('status') == 1) checked @else checked @endif>
                                             <label for="completed">{{ __('Completed') }}</label>
                                         </div>
                                     </div>

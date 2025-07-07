@@ -1,6 +1,6 @@
 @extends('backend.layout.master')
 @section('title')
-    {{ __('Pump Management') }}
+    {{ __('Shift Management') }}
 @endsection
 @section('css')
     {{-- <link rel="stylesheet" href="{{ asset('css/backend/fuel-type.css') }}"> --}}
@@ -18,13 +18,13 @@
             <!-- DIRECT CHAT -->
             <div class="card direct-chat direct-chat-primary mb-4">
                 <div class="card-header">
-                    <h3 class="card-title">{{ __('Pump Management') }}</h3>
+                    <h3 class="card-title">{{ __('Shift Management') }}</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse">
                             <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
                             <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
                         </button>
-                        <a href="{{ route('pump.create') }}" class="ui button small blue"><i
+                        <a href="{{ route('shift.create') }}" class="ui button small blue"><i
                                 class="bi bi-plus-circle-fill icon"></i>{{ __('Add new') }}</a>
                     </div>
                 </div>
@@ -35,9 +35,9 @@
                             <div class="ui buttons tiny">
                                 <button class="ui button" id="printButton"><i
                                         class="bi bi-printer icon"></i>{{ __('Print') }}</button>
-                                <a href="{{ route('pump.pdf') }}" class="ui button" id="pdfButton"><i
+                                <a href="{{ route('shift.pdf') }}" class="ui button" id="pdfButton"><i
                                         class="bi bi-file-pdf icon"></i>{{ __('PDF') }}</a>
-                                <a href="{{ route('pump.excel') }}" class="ui button" id="excelButton"><i
+                                <a href="{{ route('shift.excel') }}" class="ui button" id="excelButton"><i
                                         class="bi bi-file-earmark-spreadsheet icon"></i>{{ __('Excel') }}</a>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                                     @php
                                         $i = 1;
                                     @endphp
-                                    @foreach ($pumps as $item)
+                                    @foreach ($shifts as $item)
                                         <tr class="{{ $item->delete_status == 0 ? 'text-danger' : '' }}">
                                             <th scope="row"
                                                 class="text-center {{ $item->delete_status == 0 ? 'text-danger' : '' }}">
@@ -144,12 +144,12 @@
 @endsection
 
 @section('js')
-    @if ($pumps != null)
+    @if ($shifts != null)
         <script>
             @php
                 $i = 1;
             @endphp
-            @foreach ($pumps as $index => $student)
+            @foreach ($shifts as $index => $student)
                 $(".ui.dropdown{{ $i++ }}").dropdown();
             @endforeach
         </script>

@@ -31,7 +31,7 @@
     "Todays Fuel Price": "តម្លៃប្រេងក្នុងថ្ងៃនេះ",
     "Sale Management": "គ្រប់គ្រងការលក់",
     "Pump Management": "គ្រប់គ្រងការបូមប្រេង",
-    "Shift Management": "គ្រប់គ្រងការផ្លាស់ប្តូរ",
+    "Shift Management": "គ្រប់គ្រងវេន",
     "Employee Management": "គ្រប់គ្រងបុគ្គលិក",
     "Customer Management": "គ្រប់គ្រងអតិថិជន",
     "Supplier Management": "គ្រប់គ្រងអ្នកផ្គត់ផ្គង់",
@@ -246,5 +246,18 @@
     "Restored sale management successfully." : "ស្តាររបាយការណ៍លក់បានជោគជ័យ",
     "Sale management not found." : "ស្តាររបាយការណ៍លក់មិនមាន",
     "Checking->Completed, Uncheck->Pendding" : "ពិនិត្យ​ = បានបញ្ចប់, មិនពិនិត្យ = កំពុងរង់ចាំ",
-    "Please select Payment Method" : "សូមជ្រើសរើសវិធីសាស្ត្របង់ប្រាក់"
+    "Please select Payment Method" : "សូមជ្រើសរើសវិធីសាស្ត្របង់ប្រាក់",
+    "Add Pump Management" : "បន្ថែមការបូមប្រេង",
+    "Update Pump Management" : "ធ្វើបច្ចុប្បន្នភាពការបូមប្រេង",
+    "Active" : "សកម្ម",
+    "Inactive" : "អសកម្ម",
+    "Pump Number" : "លេខបូមប្រេង",
+    "Add pump management successfully." : "បន្ថែមការបូមប្រេងបានដោយជោគជ័យ។",
+    "Failed to add pump management." : "បរាជ័យក្នុងការបន្ថែមការបូមប្រេង។",
+    "Please enter pump code" : "សូមបញ្ចូលលេខបូមប្រេង",
+    "Pump Code" : "លេខបូមប្រេង",
+    "Pump Management List" : "បញ្ជីបូមប្រេង",
+    "Moved pump management to trash successfully." : "ផ្លាស់ទីរបាយការណ៍បូមប្រេងទៅធុងសម្រាមបានជោគជ័យ",
+    "Restored pump management successfully." : "ស្តាររបាយការណ៍បូមប្រេងបានជោគជ័យ",
+    "Pump management not found." : "របាយការណ៍​បូមប្រេងមិនមាន"
 }
