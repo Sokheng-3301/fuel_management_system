@@ -12,6 +12,7 @@ use App\Http\Controllers\SaleManagementController;
 use App\Http\Controllers\FuelTypeandPriceController;
 use App\Http\Controllers\PumpManagementController;
 use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\ShiftSelectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,6 +96,8 @@ Route::middleware(['lang', 'auth', 'active.menu'])->group(function () {
     Route::resource('shift', ShiftController::class)->names('shift');
     Route::get('shift/export/pdf', [ShiftController::class, 'pdf'])->name('shift.pdf');
     Route::get('shift/export/excel', [ShiftController::class, 'exportExcel'])->name('shift.excel');
+    Route::resource('shift-select', ShiftSelectController::class);
+
     // Route::get('shift/{id}/invoice', [ShiftController::class, 'invoice'])->name('shift.invoice');
 });
 

@@ -11,18 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('shifts', function (Blueprint $table) {
+        Schema::create('shift_selects', function (Blueprint $table) {
             $table->id();
-            $table->string('shift_id')->nullable();
-            $table->unsignedBigInteger('employee_id')->unique()->nullable();
-            $table->string('start_time')->nullable();
-            $table->string('end_time')->nullable();
+            $table->string('shift_kh')->unique()->nullable();
+            $table->string('shift_en')->unique()->nullable();
 
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('delete_status')->default(1)->comment('1:active, 0:deleted'); // 1 = active,
             $table->string('delete_by')->nullable();
             $table->timestamp('deleted_at')->nullable()->comment('Soft delete timestamp');
+
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('shifts');
+        Schema::dropIfExists('shift_selects');
     }
 };

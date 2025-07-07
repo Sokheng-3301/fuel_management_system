@@ -5,20 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Shift extends Model
+class ShiftSelect extends Model
 {
     use HasFactory;
-    protected $table = 'shifts';
-
+    protected $table = 'shift_selects';
     protected $fillable = [
-        'shift_id',
-        'employee_id',
-        'start_time',
-        'end_time',
+        'shift_kh',
+        'shift_en',
+        'delete_status',
         'created_by',
         'updated_by',
-        'delete_status',
         'delete_by',
         'deleted_at',
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

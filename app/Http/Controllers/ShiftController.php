@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Shift;
+use App\Models\ShiftSelect;
 use Illuminate\Http\Request;
 
 class ShiftController extends Controller
@@ -21,7 +23,14 @@ class ShiftController extends Controller
      */
     public function create()
     {
-        //
+
+        $data['shifts'] = ShiftSelect::with('user')->orderBy('id', 'desc')->get();
+        $data['shift_selects'] = ShiftSelect::with('user')->where('delete_status', 1)->orderBy('id', 'desc')->get();
+        $data['employees'] = User::where('account_status', 1)->orderBy('id', 'desc')->get();
+
+        $data['update'] = false;
+        $data['update_shift'] = false;
+        return view('backend.shift.form', $data);
     }
 
     /**

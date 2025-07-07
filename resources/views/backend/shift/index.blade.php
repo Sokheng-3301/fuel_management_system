@@ -51,9 +51,9 @@
                                 <thead>
                                     <tr>
                                         <th scope="col" class="text-start">{{ __('No.') }}</th>
-                                        <th scope="col" class="text-start">{{ __('Pump Number') }}</th>
-                                        <th scope="col" class="text-start">{{ __('Fuel Type') }}</th>
-                                        <th scope="col" class="text-start">{{ __('Status') }}</th>
+                                        <th scope="col" class="text-start">{{ __('Shift') }}</th>
+                                        <th scope="col" class="text-start">{{ __('Employee') }}</th>
+                                        <th scope="col" class="text-start">{{ __('Start-End (Time)') }}</th>
                                         <th scope="col" class="text-start" colspan="2">{{ __('Create Info') }}</th>
                                     </tr>
                                 </thead>
